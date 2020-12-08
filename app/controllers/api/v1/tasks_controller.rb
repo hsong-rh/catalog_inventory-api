@@ -30,9 +30,14 @@ module Api
           permitted << {'result'=>{}}
         end
 
-        if body_params['context'].present?
-          permitted.delete('context')
-          permitted << {'context'=>{}}
+        if body_params['input'].present?
+          permitted.delete('input')
+          permitted << {'input'=>{}}
+        end
+
+        if body_params['output'].present?
+          permitted.delete('output')
+          permitted << {'output'=>{}}
         end
 
         permitted << 'source_id'
