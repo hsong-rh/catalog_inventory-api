@@ -2487,8 +2487,10 @@
           "id": {
             "$ref": "#/components/schemas/ID"
           },
-          "refresh_status": {
-            "type": "string"
+          "info": {
+            "example": "The version of Tower being used",
+            "title": "Info",
+            "type": "object"
           },
           "refresh_state": {
             "type": "string"
@@ -2632,11 +2634,6 @@
           "input": {
             "example": "Task payload input content",
             "title": "Content",
-            "type": "object"
-          },
-          "context": {
-            "example": "Extra information about this task, e.g. x-rh-identity",
-            "title": "Context",
             "type": "object"
           },
           "output": {

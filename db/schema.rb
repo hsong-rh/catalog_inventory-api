@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_024650) do
+ActiveRecord::Schema.define(version: 2020_12_08_185240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -321,7 +321,6 @@ ActiveRecord::Schema.define(version: 2020_12_04_024650) do
     t.string "name", default: "", null: false
     t.string "uid", null: false
     t.bigint "tenant_id", null: false
-    t.string "refresh_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "refresh_state"
@@ -330,6 +329,7 @@ ActiveRecord::Schema.define(version: 2020_12_04_024650) do
     t.datetime "refresh_started_at"
     t.datetime "refresh_finished_at"
     t.datetime "last_successful_refresh_at"
+    t.jsonb "info"
     t.index ["tenant_id", "uid"], name: "index_sources_on_tenant_id_and_uid", unique: true
   end
 
@@ -355,7 +355,6 @@ ActiveRecord::Schema.define(version: 2020_12_04_024650) do
     t.string "type"
     t.jsonb "input"
     t.jsonb "output"
-    t.jsonb "context"
     t.datetime "completed_at"
     t.datetime "archived_at"
     t.datetime "created_at", null: false
