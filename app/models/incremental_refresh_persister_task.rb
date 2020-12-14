@@ -1,0 +1,2 @@
+class IncrementalRefreshPersisterTask < KafkaMessageTask
+end

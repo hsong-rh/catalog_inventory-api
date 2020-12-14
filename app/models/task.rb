@@ -6,4 +6,7 @@ class Task < ApplicationRecord
   validates :status, :inclusion => {:in => %w(ok warn error)}
 
   acts_as_tenant(:tenant)
+
+  def dispatch
+  end
 end

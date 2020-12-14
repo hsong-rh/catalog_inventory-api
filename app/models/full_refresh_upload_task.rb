@@ -1,0 +1,2 @@
+class FullRefreshUploadTask < MqttClientTask
+end
