@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_08_185240) do
+ActiveRecord::Schema.define(version: 2020_12_15_212934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -330,6 +330,7 @@ ActiveRecord::Schema.define(version: 2020_12_08_185240) do
     t.datetime "refresh_finished_at"
     t.datetime "last_successful_refresh_at"
     t.jsonb "info"
+    t.string "mqtt_client_id"
     t.index ["tenant_id", "uid"], name: "index_sources_on_tenant_id_and_uid", unique: true
   end
 
