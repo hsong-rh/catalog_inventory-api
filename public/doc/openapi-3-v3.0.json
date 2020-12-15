@@ -3131,6 +3131,11 @@
             "title": "Info",
             "type": "object"
           },
+          "mqtt_client_id": {
+            "example": "The GUID of MQTT client being used",
+            "title": "MqttClientId",
+            "type": "string"
+          },
           "refresh_state": {
             "type": "string"
           },
