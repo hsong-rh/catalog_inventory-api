@@ -28,7 +28,7 @@ module Api
 
         task_opts = {:name => "ServiceOffering##{operation_type}", :source_id => service_offering.source_id, :forwardable_headers => Insights::API::Common::Request.current_forwardable, :tenant => service_offering.tenant, :state => "pending", :status => "ok"}
 
-        task = operation_type.to_s == "order" ? LaunchJobTaskService.new(params).process.task : Task.create!(task_opts)
+        task = operation_type.to_s == "order" ? LaunchJobTaskService.new(params.to_unsafe_h).process.task : Task.create!(task_opts)
         
         task.dispatch
 

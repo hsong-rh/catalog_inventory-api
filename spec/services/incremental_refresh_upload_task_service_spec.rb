@@ -2,7 +2,7 @@ describe IncrementalRefreshUploadTaskService do
   include ::Spec::Support::TenantIdentity
 
   let(:source) { FactoryBot.create(:source, :tenant => tenant) }
-  let(:params) { ActionController::Parameters.new('external_tenant' => tenant.external_tenant, :source_id => source.id, :last_successful_refresh_at => Time.current.to_s) }
+  let(:params) { {'external_tenant' => tenant.external_tenant, :source_id => source.id, :last_successful_refresh_at => Time.current.to_s} }
   let(:subject) { described_class.new(params) }
 
   around do |example|

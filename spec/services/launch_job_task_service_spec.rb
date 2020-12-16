@@ -12,7 +12,7 @@ describe LaunchJobTaskService do
   let(:service_inventory) { FactoryBot.create(:service_inventory, :tenant => tenant, :source_ref => '10') }
   let(:service_offering_icon) { FactoryBot.create(:service_offering_icon, :tenant => tenant, :source => source, :source_ref => '10') }
 
-  let(:params) { ActionController::Parameters.new('service_offering_id' => service_offering.id) }
+  let(:params) { {'service_offering_id' => service_offering.id} }
   let(:subject) { described_class.new(params) }
 
   around do |example|

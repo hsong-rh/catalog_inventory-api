@@ -1,9 +1,9 @@
 class IncrementalRefreshUploadTaskService < TaskService
   attr_reader :task
 
-  def initialize(params)
+  def initialize(options)
     super
-    @last_successful_refresh_at = params.require(:last_successful_refresh_at)
+    @last_successful_refresh_at = options[:last_successful_refresh_at]
   end
 
   def process
@@ -17,13 +17,13 @@ class IncrementalRefreshUploadTaskService < TaskService
   end
 
   def task_options
-    {}.tap do |options|
-      options[:tenant] = tenant
-      options[:source_id] = source_id
-      options[:state] = 'pending'
-      options[:status] = 'ok'
-      options[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
-      options[:input] = task_input
+    {}.tap do |opts|
+      opts[:tenant] = tenant
+      opts[:source_id] = source_id
+      opts[:state] = 'pending'
+      opts[:status] = 'ok'
+      opts[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
+      opts[:input] = task_input
     end
   end
 

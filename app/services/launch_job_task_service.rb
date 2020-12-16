@@ -1,9 +1,9 @@
 class LaunchJobTaskService < TaskService
   attr_reader :task
 
-  def initialize(params)
+  def initialize(options)
     super
-    @service_offering = ServiceOffering.find(params.require(:service_offering_id))
+    @service_offering = ServiceOffering.find(@options[:service_offering_id])
   end
 
   def process
@@ -15,13 +15,13 @@ class LaunchJobTaskService < TaskService
   private
 
   def task_options
-    {}.tap do |options|
-      options[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
-      options[:source_id] = source_id
-      options[:tenant] = tenant
-      options[:state]  = 'pending'
-      options[:status] = 'ok'
-      options[:input] = task_input
+    {}.tap do |opts|
+      opts[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
+      opts[:source_id] = source_id
+      opts[:tenant] = tenant
+      opts[:state]  = 'pending'
+      opts[:status] = 'ok'
+      opts[:input] = task_input
     end
   end
 
@@ -51,6 +51,6 @@ class LaunchJobTaskService < TaskService
   end
 
   def payload_params
-    {:extra_vars => @params[:service_parameters] || {}}
+    {:extra_vars => @options[:service_parameters] || {}}
   end
 end

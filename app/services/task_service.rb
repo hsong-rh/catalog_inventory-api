@@ -1,8 +1,8 @@
 class TaskService
   TOWER_API_VERSION = "api/v2".freeze
 
-  def initialize(params)
-    @params = params
+  def initialize(options)
+    @options = options.symbolize_keys
   end
 
   private
@@ -16,11 +16,11 @@ class TaskService
   end
 
   def tenant
-    Tenant.find_by(:external_tenant => @params.require(:external_tenant))
+    Tenant.find_by(:external_tenant => @options[:external_tenant])
   end
 
   def source_id
-    @params.require(:source_id)
+    @options[:source_id]
   end
 
   def fetch_related
