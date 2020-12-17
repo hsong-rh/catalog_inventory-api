@@ -10,10 +10,10 @@ class Task < ApplicationRecord
   after_update :post_launch_job_task, :if => proc { type == 'LaunchJobTask' && state == 'completed' }
 
   def post_launch_job_task
-    # TODO: populate opt
-    opts = {:tenant_id => tenant.id, :source_id => source.id, :source_ref => SecureRandom.uuid}
+    PostLaunchJobTaskService.new(service_options).process
+  end
 
-    PostLaunchJobTaskService.new(opts).process
+  def service_options
   end
 
   def dispatch
