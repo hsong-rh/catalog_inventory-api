@@ -1,0 +1,2 @@
+class IncrementalRefreshUploadTask < MqttClientTask
+end

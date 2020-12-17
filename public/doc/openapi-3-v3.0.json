@@ -70,6 +70,9 @@
     },
     "/service_credential_types": {
       "get": {
+        "tags": [
+          "ServiceCredentialType"
+        ],
         "summary": "List ServiceCredentialTypes",
         "operationId": "listServiceCredentialTypes",
         "description": "Returns an array of ServiceCredentialType objects",
@@ -103,6 +106,9 @@
     },
     "/service_credential_types/{id}": {
       "get": {
+        "tags": [
+          "ServiceCredentialType"
+        ],
         "summary": "Show an existing ServiceCredentialType",
         "operationId": "showServiceCredentialType",
         "description": "Returns a ServiceCredentialType object",
@@ -137,6 +143,9 @@
     },
     "/service_credentials": {
       "get": {
+        "tags": [
+          "ServiceCredential"
+        ],
         "summary": "List ServiceCredentials",
         "operationId": "listServiceCredentials",
         "description": "Returns an array of ServiceCredential objects",
@@ -170,6 +179,9 @@
     },
     "/service_credentials/{id}": {
       "get": {
+        "tags": [
+          "ServiceCredential"
+        ],
         "summary": "Show an existing ServiceCredential",
         "operationId": "showServiceCredential",
         "description": "Returns a ServiceCredential object",
@@ -204,6 +216,9 @@
     },
     "/service_instance_nodes": {
       "get": {
+        "tags": [
+          "ServiceInstanceNode"
+        ],
         "summary": "List ServiceInstanceNodes",
         "operationId": "listServiceInstanceNodes",
         "description": "Returns an array of ServiceInstanceNode objects",
@@ -237,6 +252,9 @@
     },
     "/service_instance_nodes/{id}": {
       "get": {
+        "tags": [
+          "ServiceInstanceNode"
+        ],
         "summary": "Show an existing ServiceInstanceNode",
         "operationId": "showServiceInstanceNode",
         "description": "Returns a ServiceInstanceNode object",
@@ -271,6 +289,9 @@
     },
     "/service_instance_nodes/{id}/service_credentials": {
       "get": {
+        "tags": [
+          "ServiceInstanceNode"
+        ],
         "summary": "List ServiceCredentials for ServiceInstanceNode",
         "operationId": "listServiceInstanceNodeServiceCredentials",
         "description": "Returns an array of ServiceCredential objects",
@@ -317,6 +338,9 @@
     },
     "/service_instances": {
       "get": {
+        "tags": [
+          "ServiceInstance"
+        ],
         "summary": "List ServiceInstances",
         "operationId": "listServiceInstances",
         "description": "Returns an array of ServiceInstance objects",
@@ -350,6 +374,9 @@
     },
     "/service_instances/{id}": {
       "get": {
+        "tags": [
+          "ServiceInstance"
+        ],
         "summary": "Show an existing ServiceInstance",
         "operationId": "showServiceInstance",
         "description": "Returns a ServiceInstance object",
@@ -384,6 +411,9 @@
     },
     "/service_instances/{id}/service_credentials": {
       "get": {
+        "tags": [
+          "ServiceInstance"
+        ],
         "summary": "List ServiceCredentials for ServiceInstance",
         "operationId": "listServiceInstanceServiceCredentials",
         "description": "Returns an array of ServiceCredential objects",
@@ -430,6 +460,9 @@
     },
     "/service_instances/{id}/service_instance_nodes": {
       "get": {
+        "tags": [
+          "ServiceInstance"
+        ],
         "summary": "List ServiceInstanceNodes for ServiceInstance",
         "operationId": "listServiceInstanceServiceInstanceNodes",
         "description": "Returns an array of ServiceInstanceNode objects",
@@ -476,6 +509,9 @@
     },
     "/service_inventories": {
       "get": {
+        "tags": [
+          "ServiceInventory"
+        ],
         "summary": "List ServiceInventories",
         "operationId": "listServiceInventories",
         "description": "Returns an array of ServiceInventory objects",
@@ -509,6 +545,9 @@
     },
     "/service_inventories/{id}": {
       "get": {
+        "tags": [
+          "ServiceInventory"
+        ],
         "summary": "Show an existing ServiceInventory",
         "operationId": "showServiceInventory",
         "description": "Returns a ServiceInventory object",
@@ -543,6 +582,9 @@
     },
     "/service_inventories/{id}/tag": {
       "post": {
+        "tags": [
+          "ServiceInventory"
+        ],
         "summary": "Tag a ServiceInventory",
         "operationId": "tagServiceInventory",
         "description": "Tags a ServiceInventory object",
@@ -587,6 +629,9 @@
     },
     "/service_inventories/{id}/tags": {
       "get": {
+        "tags": [
+          "ServiceInventory"
+        ],
         "summary": "List Tags for ServiceInventory",
         "operationId": "listServiceInventoryTags",
         "description": "Returns an array of Tag objects",
@@ -633,6 +678,9 @@
     },
     "/service_inventories/{id}/untag": {
       "post": {
+        "tags": [
+          "ServiceInventory"
+        ],
         "summary": "Untag a ServiceInventory",
         "operationId": "untagServiceInventory",
         "description": "Untags a ServiceInventory object",
@@ -664,6 +712,9 @@
     },
     "/service_offering_icons": {
       "get": {
+        "tags": [
+          "ServiceOfferingIcon"
+        ],
         "summary": "List ServiceOfferingIcons",
         "operationId": "listServiceOfferingIcons",
         "description": "Returns an array of ServiceOfferingIcon objects",
@@ -697,6 +748,9 @@
     },
     "/service_offering_icons/{id}": {
       "get": {
+        "tags": [
+          "ServiceOfferingIcon"
+        ],
         "summary": "Show an existing ServiceOfferingIcon",
         "operationId": "showServiceOfferingIcon",
         "description": "Returns a ServiceOfferingIcon object",
@@ -731,6 +785,9 @@
     },
     "/service_offering_icons/{id}/icon_data": {
       "get": {
+        "tags": [
+          "ServiceOfferingIcon"
+        ],
         "summary": "Show an existing ServiceOfferingIcon IconData",
         "operationId": "showServiceOfferingIconIconData",
         "description": "Returns a ServiceOfferingIcon IconData",
@@ -759,6 +816,9 @@
     },
     "/service_offering_nodes": {
       "get": {
+        "tags": [
+          "ServiceOfferingNode"
+        ],
         "summary": "List ServiceOfferingNodes",
         "operationId": "listServiceOfferingNodes",
         "description": "Returns an array of ServiceOfferingNode objects",
@@ -792,6 +852,9 @@
     },
     "/service_offering_nodes/{id}": {
       "get": {
+        "tags": [
+          "ServiceOfferingNode"
+        ],
         "summary": "Show an existing ServiceOfferingNode",
         "operationId": "showServiceOfferingNode",
         "description": "Returns a ServiceOfferingNode object",
@@ -826,6 +889,9 @@
     },
     "/service_offering_nodes/{id}/service_credentials": {
       "get": {
+        "tags": [
+          "ServiceOfferingNode"
+        ],
         "summary": "List ServiceCredentials for ServiceOfferingNode",
         "operationId": "listServiceOfferingNodeServiceCredentials",
         "description": "Returns an array of ServiceCredential objects",
@@ -872,6 +938,9 @@
     },
     "/service_offerings": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List ServiceOfferings",
         "operationId": "listServiceOfferings",
         "description": "Returns an array of ServiceOffering objects",
@@ -905,6 +974,9 @@
     },
     "/service_offerings/{id}": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "Show an existing ServiceOffering",
         "operationId": "showServiceOffering",
         "description": "Returns a ServiceOffering object",
@@ -939,6 +1011,9 @@
     },
     "/service_offerings/{id}/applied_inventories": {
       "post": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "Invokes computing of ServiceInventories for given ServiceOffering",
         "operationId": "appliedInventoriesForServiceOffering",
         "description": "Returns a Task id",
@@ -982,6 +1057,9 @@
     },
     "/service_offerings/{id}/order": {
       "post": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "Order an existing ServiceOffering",
         "operationId": "orderServiceOffering",
         "description": "Returns a Task id",
@@ -1025,6 +1103,9 @@
     },
     "/service_offerings/{id}/service_credentials": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List ServiceCredentials for ServiceOffering",
         "operationId": "listServiceOfferingServiceCredentials",
         "description": "Returns an array of ServiceCredential objects",
@@ -1071,6 +1152,9 @@
     },
     "/service_offerings/{id}/service_instances": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List ServiceInstances for ServiceOffering",
         "operationId": "listServiceOfferingServiceInstances",
         "description": "Returns an array of ServiceInstance objects",
@@ -1117,6 +1201,9 @@
     },
     "/service_offerings/{id}/service_offering_nodes": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List ServiceOfferingNodes for ServiceOffering",
         "operationId": "listServiceOfferingServiceOfferingNodes",
         "description": "Returns an array of ServiceOfferingNode objects",
@@ -1163,6 +1250,9 @@
     },
     "/service_offerings/{id}/service_plans": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List ServicePlans for ServiceOffering",
         "operationId": "listServiceOfferingServicePlans",
         "description": "Returns an array of ServicePlan objects",
@@ -1209,6 +1299,9 @@
     },
     "/service_offerings/{id}/tag": {
       "post": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "Tag a ServiceOffering",
         "operationId": "tagServiceOffering",
         "description": "Tags a ServiceOffering object",
@@ -1253,6 +1346,9 @@
     },
     "/service_offerings/{id}/tags": {
       "get": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "List Tags for ServiceOffering",
         "operationId": "listServiceOfferingTags",
         "description": "Returns an array of Tag objects",
@@ -1299,6 +1395,9 @@
     },
     "/service_offerings/{id}/untag": {
       "post": {
+        "tags": [
+          "ServiceOffering"
+        ],
         "summary": "Untag a ServiceOffering",
         "operationId": "untagServiceOffering",
         "description": "Untags a ServiceOffering object",
@@ -1330,6 +1429,9 @@
     },
     "/service_plans": {
       "get": {
+        "tags": [
+          "ServicePlan"
+        ],
         "summary": "List ServicePlans",
         "operationId": "listServicePlans",
         "description": "Returns an array of ServicePlan objects",
@@ -1363,6 +1465,9 @@
     },
     "/service_plans/{id}": {
       "get": {
+        "tags": [
+          "ServicePlan"
+        ],
         "summary": "Show an existing ServicePlan",
         "operationId": "showServicePlan",
         "description": "Returns a ServicePlan object",
@@ -1397,6 +1502,9 @@
     },
     "/service_plans/{id}/order": {
       "post": {
+        "tags": [
+          "ServicePlan"
+        ],
         "summary": "Order an existing ServicePlan",
         "operationId": "orderServicePlan",
         "description": "Returns a Task id",
@@ -1440,6 +1548,9 @@
     },
     "/service_plans/{id}/service_instances": {
       "get": {
+        "tags": [
+          "ServicePlan"
+        ],
         "summary": "List ServiceInstances for ServicePlan",
         "operationId": "listServicePlanServiceInstances",
         "description": "Returns an array of ServiceInstance objects",
@@ -1486,6 +1597,9 @@
     },
     "/sources": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List Sources",
         "operationId": "listSources",
         "description": "Returns an array of Source objects",
@@ -1519,6 +1633,9 @@
     },
     "/sources/{id}": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "Show an existing Source",
         "operationId": "showSource",
         "description": "Returns a Source object",
@@ -1553,6 +1670,9 @@
     },
     "/sources/{id}/service_instance_nodes": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServiceInstanceNodes for Source",
         "operationId": "listSourceServiceInstanceNodes",
         "description": "Returns an array of ServiceInstanceNode objects",
@@ -1599,6 +1719,9 @@
     },
     "/sources/{id}/service_instances": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServiceInstances for Source",
         "operationId": "listSourceServiceInstances",
         "description": "Returns an array of ServiceInstance objects",
@@ -1645,6 +1768,9 @@
     },
     "/sources/{id}/service_inventories": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServiceInventories for Source",
         "operationId": "listSourceServiceInventories",
         "description": "Returns an array of ServiceInventory objects",
@@ -1691,6 +1817,9 @@
     },
     "/sources/{id}/service_offering_nodes": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServiceOfferingNodes for Source",
         "operationId": "listSourceServiceOfferingNodes",
         "description": "Returns an array of ServiceOfferingNode objects",
@@ -1737,6 +1866,9 @@
     },
     "/sources/{id}/service_offerings": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServiceOfferings for Source",
         "operationId": "listSourceServiceOfferings",
         "description": "Returns an array of ServiceOffering objects",
@@ -1783,6 +1915,9 @@
     },
     "/sources/{id}/service_plans": {
       "get": {
+        "tags": [
+          "Source"
+        ],
         "summary": "List ServicePlans for Source",
         "operationId": "listSourceServicePlans",
         "description": "Returns an array of ServicePlan objects",
@@ -1829,6 +1964,9 @@
     },
     "/tags": {
       "get": {
+        "tags": [
+          "Tags"
+        ],
         "summary": "List Tags",
         "operationId": "listTags",
         "description": "Returns an array of Tag objects",
@@ -1862,6 +2000,9 @@
     },
     "/tags/{id}": {
       "get": {
+        "tags": [
+          "Tags"
+        ],
         "summary": "Show an existing Tag",
         "operationId": "showTag",
         "description": "Returns a Tag object",
@@ -1896,6 +2037,9 @@
     },
     "/tags/{id}/service_inventories": {
       "get": {
+        "tags": [
+          "Tags"
+        ],
         "summary": "List ServiceInventories for Tag",
         "operationId": "listTagServiceInventories",
         "description": "Returns an array of ServiceInventory objects",
@@ -1942,6 +2086,9 @@
     },
     "/tags/{id}/service_offerings": {
       "get": {
+        "tags": [
+          "Tags"
+        ],
         "summary": "List ServiceOfferings for Tag",
         "operationId": "listTagServiceOfferings",
         "description": "Returns an array of ServiceOffering objects",
@@ -1988,6 +2135,9 @@
     },
     "/tasks": {
       "get": {
+        "tags": [
+          "Task"
+        ],
         "summary": "List Tasks",
         "operationId": "listTasks",
         "description": "Returns an array of Task objects",
@@ -2021,6 +2171,9 @@
     },
     "/tasks/{id}": {
       "get": {
+        "tags": [
+          "Task"
+        ],
         "summary": "Show an existing Task",
         "operationId": "showTask",
         "description": "Returns a Task object",
@@ -2053,6 +2206,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Task"
+        ],
         "summary": "Update an existing Task",
         "operationId": "updateTask",
         "description": "Updates a Task object",
@@ -3288,6 +3444,18 @@
           }
         },
         "additionalProperties": false
+      },
+      "IncrementalRefreshUploadTask": {
+        "$ref": "#/components/schemas/Task"
+      },
+      "FullRefreshUploadTask": {
+        "$ref": "#/components/schemas/Task"
+      },
+      "CheckAvailabilityTask": {
+        "$ref": "#/components/schemas/Task"
+      },
+      "LaunchJobTask": {
+        "$ref": "#/components/schemas/Task"
       },
       "TasksCollection": {
         "type": "object",

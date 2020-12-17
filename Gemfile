@@ -21,6 +21,7 @@ gem 'sources-api-client',              '~> 1.0'
 
 group :development, :test do
   gem "byebug", :platform => :mri
+  gem 'climate_control'
   gem "rubocop",             "~> 1.0.0", :require => false
   gem "rubocop-performance", "~> 1.8",   :require => false
   gem "rubocop-rails",       "~> 2.8",   :require => false
@@ -28,5 +29,8 @@ group :development, :test do
 end
 
 group :test do
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec-rails', '~>3.8'
+  gem 'shoulda-matchers', '~> 3.1'
 end
