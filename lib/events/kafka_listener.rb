@@ -1,17 +1,17 @@
 module Events
   class KafkaListener
     attr_accessor :messaging_client_options, :service_name, :group_ref
-  
+
     def initialize(messaging_client_options, service_name, group_ref)
       self.messaging_client_options = default_messaging_options.merge(messaging_client_options)
       self.service_name = service_name
       self.group_ref = group_ref
     end
-  
+
     def run
       Thread.new { subscribe }
     end
-  
+
     def subscribe
       ManageIQ::Messaging::Client.open(messaging_client_options) do |client|
         client.subscribe_topic(
@@ -26,21 +26,42 @@ module Events
       Rails.logger.error(["Something is wrong with Kafka client: ", e.message, *e.backtrace].join($RS))
       retry
     end
-  
+
     private
-  
+
     def raw_process(event)
       Rails.logger.info("Kafka message #{event.message} received with payload: #{event.payload}")
-  
-      ActiveRecord::Base.connection_pool.with_connection do
-        process_event(event)
+
+      insights_headers = event.headers.slice('x-rh-identity', 'x-rh-insights-request-id')
+      if insights_headers.empty?
+        header_hash = JSON.parse(event.payload)
+        insights_headers['x-rh-insights-request-id'] = header_hash["request_id"]
+        insights_headers['x-rh-identity'] = header_hash["b64_identity"]
+      end
+
+      unless insights_headers['x-rh-identity'] && insights_headers['x-rh-insights-request-id']
+        Rails.logger.error("Message skipped because of missing required headers")
+        return
+      end
+
+      Insights::API::Common::Request.with_request(:headers => insights_headers, :original_url => nil) do |req|
+        tenant = Tenant.first_or_create(:external_tenant => req.tenant)
+        if tenant
+          ActsAsTenant.with_tenant(tenant) do
+            ActiveRecord::Base.connection_pool.with_connection do
+              process_event(event)
+            end
+          end
+        else
+          Rails.logger.error("Message skipped because it does not belong to a valid tenant")
+        end
       end
     rescue => e
       Rails.logger.error(["Error processing event: ", e.message, *e.backtrace].join($RS))
     ensure
       event.ack
     end
-  
+
     def default_messaging_options
       {:protocol => :Kafka, :encoding => 'json'}
     end

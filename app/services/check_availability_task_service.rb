@@ -2,12 +2,19 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
+    validate_options
     @task = CheckAvailabilityTask.create!(task_options)
 
     self
+  rescue => e
+    Rails.logger.error("Failed to create task: #{e.message}")
   end
 
   private
+
+  def validate_options
+    raise("Options must have source_id and external_tenant keys") unless @options[:params].present? && @options.dig(:params, :source_id).present? && @options.dig(:params, :external_tenant).present?
+  end
 
   def response_format
     "json"
@@ -22,6 +29,14 @@ class CheckAvailabilityTaskService < TaskService
       options[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
       options[:input] = task_input
     end
+  end
+
+  def tenant
+    Tenant.find_by(:external_tenant => @options[:params][:external_tenant])
+  end
+
+  def source_id
+    @options[:params][:source_id]
   end
 
   def jobs

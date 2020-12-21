@@ -1,23 +1,16 @@
-class PostLaunchJobTaskService < TaskService
+class PostRefreshUploadTaskService < TaskService
   def process
-    create_service_instance
     create_kafka_event
-
     self
   end
 
   private
 
-  def create_service_instance
-    instance = ServiceInstance.create!(@options)
-    Rails.logger.info("ServiceInstance##{instance.id} is created.")
-  end
-
   def create_kafka_event
     CatalogInventory::Api::Messaging.client.publish_topic(
-      :service => "platform.catalog-inventory.task-output-stream",
+      :service => "platform.catalog.persister",
       # TODO: what's event??
-      :event   => "Task.update",
+      :event   => "Task.upload",
       :payload => kafka_payload,
       :headers => Insights::API::Common::Request.current_forwardable
     )

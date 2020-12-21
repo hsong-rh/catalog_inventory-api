@@ -1,7 +1,7 @@
-describe Task do
+describe LaunchJobTask do
   include ::Spec::Support::TenantIdentity
 
-  let(:task) { Task.create!(:name => "task2", :tenant => tenant, :source => source) }
+  let(:task) { LaunchJobTask.create!(:name => "task2", :tenant => tenant, :source => source) }
   let(:source) { Source.create!(:name => "source1", :tenant => tenant) }
 
   describe "after_update callback" do
@@ -22,16 +22,6 @@ describe Task do
         expect(launch_job_task).to_not receive(:post_launch_job_task)
 
         launch_job_task.run_callbacks :update
-      end
-    end
-
-    context "when other task has completed state" do
-      let(:task) { Task.create!(:name => "task", :state => "completed", :status => "ok", :tenant => tenant, :source => source) }
-
-      it "no calls to post_launch_job_task" do
-        expect(task).to_not receive(:post_launch_job_task)
-
-        task.run_callbacks :update
       end
     end
   end

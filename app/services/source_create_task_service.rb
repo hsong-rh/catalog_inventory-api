@@ -1,6 +1,6 @@
 class SourceCreateTaskService
   def initialize(options)
-    @options = options
+    @options = options.deep_symbolize_keys
   end
 
   def process
@@ -10,9 +10,8 @@ class SourceCreateTaskService
   def source_options
     # TODO: populate more fields
     {}.tap do |options|
-      options[:id] = @options[:id]
-      options[:uid] = @options[:uid]
-      options[:tenant_id] = @options[:tenant_id]
+      options[:id] = @options[:source_id]
+      options[:uid] = @options[:source_uid]
     end
   end
 end

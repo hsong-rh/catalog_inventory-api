@@ -1,4 +1,10 @@
 class LaunchJobTask < MqttClientTask
+  after_update :post_launch_job_task, :if => proc { type == 'LaunchJobTask' && state == 'completed' }
+
+  def post_launch_job_task
+    PostLaunchJobTaskService.new(service_options).process
+  end
+
   def service_options
     {}.tap do |options|
       options[:tenant_id] = tenant.id
@@ -8,7 +14,6 @@ class LaunchJobTask < MqttClientTask
       options[:external_url] = output["url"]
       options[:source_ref] = output["id"]
       options[:name] = output["name"]
-      options[:description] = output["description"]
       options[:source_created_at] = output["created"]
       options[:extra] = extra
     end

@@ -10,7 +10,8 @@ describe Events::KafkaListener do
   let(:service) { 'service' }
   let(:persist_ref) { 'ref' }
   let(:subject) { test_listener_class.new({:host => 'localhost', :port => 9092}, service, persist_ref) }
-  let(:event) { ManageIQ::Messaging::ReceivedMessage.new(nil, 'test event', {'data' => 'value'}, {}, nil, client) }
+  let(:headers) { default_headers }
+  let(:event) { ManageIQ::Messaging::ReceivedMessage.new(nil, 'test event', {'data' => 'value'}, headers, nil, client) }
   
   before do
     allow(ManageIQ::Messaging::Client).to receive(:open).with(
@@ -30,6 +31,8 @@ describe Events::KafkaListener do
   end
 
   context "when a message is received" do
+    before { Tenant.create(:external_tenant => '0369233') }
+
     it "processes the message" do
       expect(subject).to receive(:process_event)
       expect(event).to receive(:ack)
@@ -39,6 +42,7 @@ describe Events::KafkaListener do
 
   context "when the event processing has an error" do  
     before do
+      Tenant.create(:external_tenant => '0369233')
       allow(subject).to receive(:process_event).and_raise(StandardError)
     end
 
@@ -52,11 +56,6 @@ describe Events::KafkaListener do
   
     it "acks the event" do
       expect(event).to receive(:ack)
-      subject.subscribe
-    end
-  
-    it "logs an error" do
-      expect(Rails.logger).to receive(:error).with(/Error processing event/).ordered
       subject.subscribe
     end
   end

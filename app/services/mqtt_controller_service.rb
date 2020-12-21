@@ -9,7 +9,9 @@ class MQTTControllerService < TaskService
   end
 
   def process
-    system(publish)
+    Rails.logger.info("publish: #{publish}")
+    exit_status = system(publish)
+    Rails.logger.info("exit_status: #{exit_status}")
   end
 
   def publish
