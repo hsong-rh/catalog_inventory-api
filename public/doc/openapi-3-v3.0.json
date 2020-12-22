@@ -3311,7 +3311,22 @@
             "readOnly": true,
             "type": "string"
           },
+          "availability_status": {
+            "example": "The availability status of source",
+            "title": "AvailabilityStatus",
+            "type": "string"
+          },
           "last_successful_refresh_at": {
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "last_checked_at": {
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "last_available_at": {
             "format": "date-time",
             "readOnly": true,
             "type": "string"
@@ -3455,6 +3470,9 @@
         "$ref": "#/components/schemas/Task"
       },
       "LaunchJobTask": {
+        "$ref": "#/components/schemas/Task"
+      },
+      "FullRefreshPersisterTask": {
         "$ref": "#/components/schemas/Task"
       },
       "TasksCollection": {
