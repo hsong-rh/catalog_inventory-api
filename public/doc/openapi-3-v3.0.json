@@ -3403,6 +3403,7 @@
           "input": {
             "example": "Task payload input content",
             "title": "Content",
+            "readOnly": true,
             "type": "object"
           },
           "output": {
