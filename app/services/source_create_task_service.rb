@@ -8,7 +8,6 @@ class SourceCreateTaskService
   end
 
   def source_options
-    # TODO: populate more fields
     {}.tap do |options|
       options[:id] = @options[:source_id]
       options[:uid] = @options[:source_uid]

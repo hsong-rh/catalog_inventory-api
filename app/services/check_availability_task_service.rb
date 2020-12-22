@@ -13,7 +13,7 @@ class CheckAvailabilityTaskService < TaskService
   private
 
   def validate_options
-    raise("Options must have source_id and external_tenant keys") unless @options[:params].present? && @options.dig(:params, :source_id).present? && @options.dig(:params, :external_tenant).present?
+    raise("Options must have source_id and external_tenant keys") unless @options[:source_id].present? && @options[:external_tenant].present?
   end
 
   def response_format
@@ -29,14 +29,6 @@ class CheckAvailabilityTaskService < TaskService
       options[:forwardable_headers] = Insights::API::Common::Request.current_forwardable
       options[:input] = task_input
     end
-  end
-
-  def tenant
-    Tenant.find_by(:external_tenant => @options[:params][:external_tenant])
-  end
-
-  def source_id
-    @options[:params][:source_id]
   end
 
   def jobs

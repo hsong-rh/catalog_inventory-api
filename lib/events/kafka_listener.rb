@@ -33,6 +33,8 @@ module Events
       Rails.logger.info("Kafka message #{event.message} received with payload: #{event.payload}")
 
       insights_headers = event.headers.slice('x-rh-identity', 'x-rh-insights-request-id')
+
+      # Kafka message from Ingress has no headers. We need to prepare the headers from its payload.
       if insights_headers.empty?
         header_hash = JSON.parse(event.payload)
         insights_headers['x-rh-insights-request-id'] = header_hash["request_id"]

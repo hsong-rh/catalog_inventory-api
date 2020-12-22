@@ -12,7 +12,7 @@ class PostCheckAvailabilityTaskService < TaskService
   def process
     # TODO: need to add two columns to save available status
     update_source
-    create_kafka_event
+    KafkaEventService.raise_event(SERVICE_NAME, EVENT_AVAILABILITY_STATUS, kafka_payload)
     create_refresh_upload_task if @task.status == "ok"
     self
   end
@@ -21,17 +21,6 @@ class PostCheckAvailabilityTaskService < TaskService
 
   def update_source
     @source.update!(:info => @options[:output])
-  end
-
-  def create_kafka_event
-    CatalogInventory::Api::Messaging.client.publish_topic(
-      :service => SERVICE_NAME,
-      :event   => EVENT_AVAILABILITY_STATUS,
-      :payload => kafka_payload,
-      :headers => Insights::API::Common::Request.current_forwardable
-    )
-
-    Rails.logger.info("event(Task.update) published to kafka.")
   end
 
   def kafka_payload
@@ -50,7 +39,7 @@ class PostCheckAvailabilityTaskService < TaskService
     opts = {:tenant_id => @options[:tenant_id], :source_id => @source.id}
 
     upload_task = if @source.last_successful_refresh_at.present?
-                    IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at)).process.task
+                    IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at.iso8601)).process.task
                   else
                     FullRefreshUploadTaskService.new(opts).process.task
                   end

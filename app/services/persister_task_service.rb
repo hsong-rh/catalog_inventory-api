@@ -6,21 +6,9 @@ class PersisterTaskService
 
   def process
     @task = FullRefreshPersisterTask.create!(opts)
-    create_kafka_event
+    KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
 
     self
-  end
-
-  def create_kafka_event
-    CatalogInventory::Api::Messaging.client.publish_topic(
-      :service => "platform.catalog.persister",
-      :event   => "persister",
-      :payload => payload,
-      :headers => Insights::API::Common::Request.current_forwardable
-    )
-
-    Rails.logger.info("payload: #{payload}")
-    Rails.logger.info("event(Task.update) published to kafka.")
   end
 
   def opts
@@ -47,8 +35,8 @@ class PersisterTaskService
 
   def task_url
     host = ENV.fetch("CATALOG_INVENTORY_INTERNAL_URL")
-    app_version = "v3.0"
+    app_version = ENV["CURRENT_API_VERSION"] || "v3.0"
 
-   File.join(host, ENV["PATH_PREFIX"], ENV["APP_NAME"], app_version, "tasks", @task.id).gsub(/^\/+|\/+$/, "")
+    File.join(host, ENV["PATH_PREFIX"], ENV["APP_NAME"], app_version, "tasks", @task.id).gsub(/^\/+|\/+$/, "")
   end
 end

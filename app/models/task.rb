@@ -8,7 +8,7 @@ class Task < ApplicationRecord
   acts_as_tenant(:tenant)
 
   def service_options
-    {:task => self}
+    {:tenant_id => tenant.id, :source_id => source.id, :task => self}
   end
 
   def dispatch
