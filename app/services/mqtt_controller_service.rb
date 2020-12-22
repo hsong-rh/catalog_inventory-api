@@ -8,8 +8,11 @@ class MQTTControllerService < TaskService
     @mqtt_client_url  = options[:mqtt_client_url] || raise("Missing mqtt_client_url")
   end
 
+  # TODO: will replace by the mqtt controller in cluster
   def process
-    system(publish)
+    Rails.logger.info("publish: #{publish}")
+    exit_status = system(publish)
+    Rails.logger.info("exit_status: #{exit_status}")
   end
 
   def publish

@@ -2,12 +2,19 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
+    validate_options
     @task = CheckAvailabilityTask.create!(task_options)
 
     self
+  rescue => e
+    Rails.logger.error("Failed to create task: #{e.message}")
   end
 
   private
+
+  def validate_options
+    raise("Options must have source_id and external_tenant keys") unless @options[:source_id].present? && @options[:external_tenant].present?
+  end
 
   def response_format
     "json"

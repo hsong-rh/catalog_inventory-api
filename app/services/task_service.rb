@@ -2,7 +2,7 @@ class TaskService
   TOWER_API_VERSION = "api/v2".freeze
 
   def initialize(options)
-    @options = options.symbolize_keys
+    @options = options.deep_symbolize_keys
   end
 
   private

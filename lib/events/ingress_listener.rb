@@ -10,10 +10,7 @@ module Events
     private
 
     def process_event(event)
-      headers = {}
-      headers["x-rh-identity"] = event.payload["b64_identity"]
-
-      EventRouter.dispatch("Catalog.upload", event.payload, headers)
+      EventRouter.dispatch("Catalog.upload", event.payload, event.headers)
     rescue
       # TODO handle error
     end
