@@ -10,7 +10,6 @@ class PostCheckAvailabilityTaskService < TaskService
   end
 
   def process
-    # TODO: need to add two columns to save available status
     update_source
     KafkaEventService.raise_event(SERVICE_NAME, EVENT_AVAILABILITY_STATUS, kafka_payload)
     create_refresh_upload_task if @task.status == "ok"
@@ -20,7 +19,10 @@ class PostCheckAvailabilityTaskService < TaskService
   private
 
   def update_source
-    @source.update!(:info => @options[:output])
+    update_opts = {:availability_status => source_status, :last_checked_at => @task.created_at}
+    update_opts.merge!(:last_available_at => @task.created_at, :info => @options[:output]) if @task.status == "ok"
+
+    @source.update!(update_opts)
   end
 
   def kafka_payload
