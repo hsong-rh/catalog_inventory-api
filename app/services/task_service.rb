@@ -3,9 +3,14 @@ class TaskService
 
   def initialize(options)
     @options = options.deep_symbolize_keys
+    validate_options
   end
 
   private
+
+  def validate_options
+    raise("Options must have source_id and external_tenant keys") unless @options[:source_id].present? && @options[:external_tenant].present?
+  end
 
   def task_input
     CatalogInventory::Payload.new(response_format, upload_url, jobs).as_json

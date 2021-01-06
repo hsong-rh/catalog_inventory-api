@@ -1,22 +1,25 @@
 class PostCheckAvailabilityTaskService < TaskService
   STATUS_AVAILABLE, STATUS_UNAVAILABLE = %w[available unavailable].freeze
-  EVENT_AVAILABILITY_STATUS            = "availability_status".freeze
-  SERVICE_NAME                         = "platform.sources.status".freeze
 
   def initialize(options)
     super
-    @source = Source.find(options[:source_id]) || raise("source_id must be specified in options")
-    @task   = CheckAvailabilityTask.find(options[:task_id]) || raise("task_id must be specified")
+    @source = Source.find(@options[:source_id])
+    @task   = @options[:task]
   end
 
   def process
     update_source
-    KafkaEventService.raise_event(SERVICE_NAME, EVENT_AVAILABILITY_STATUS, kafka_payload)
+    KafkaEventService.raise_event("platform.sources.status", "availability_status", kafka_payload)
     create_refresh_upload_task if @task.status == "ok"
     self
   end
 
   private
+
+  def validate_options
+    super
+    raise("Options must have task key") if @options[:task].blank?
+  end
 
   def update_source
     update_opts = {:availability_status => source_status, :last_checked_at => @task.created_at}

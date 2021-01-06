@@ -14,6 +14,10 @@ class LaunchJobTaskService < TaskService
 
   private
 
+  def validate_options
+    raise("Options must have service_offering_id key") if @options[:service_offering_id].blank?
+  end
+
   def task_options
     {}.tap do |opts|
       opts[:forwardable_headers] = Insights::API::Common::Request.current_forwardable

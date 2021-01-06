@@ -1,13 +1,13 @@
 module Events
   class EventRouter
-    def self.dispatch(event_type, payload, headers = nil)
+    def self.dispatch(event_type, payload)
       case event_type
       when "Catalog.upload"
         PersisterTaskService.new(payload).process
       when "Source.create"
         SourceCreateTaskService.new(payload).process
-      when "Source.delete"
-        # TODO: 
+      when "Source.destroy"
+        SourceDestroyTaskService.new(payload).process
       when "Source.availability_check"
         task = CheckAvailabilityTaskService.new(payload["params"]).process.task
         task.dispatch
@@ -17,7 +17,7 @@ module Events
         Rails.logger.warn("Event type: #{event_type} is not supported.")
       end
     rescue => e
-      # TODO: make sure thread is alive even exception raises
+      Rails.logger.error("Failed to dispatch event [#{event_type}]: #{e.message}")
     end
   end
 end

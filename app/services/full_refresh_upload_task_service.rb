@@ -93,6 +93,6 @@ class FullRefreshUploadTaskService < TaskService
   end
 
   def upload_url
-    ENV.fetch("UPLOAD_URL") || raise("UPLOAD_URL must be specified")
+    ENV.fetch("UPLOAD_URL")
   end
 end

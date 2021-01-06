@@ -10,6 +10,7 @@ class MqttClientTask < Task
             :mqtt_client_guid => source.mqtt_client_id,
             :mqtt_client_url  => mqtt_client_url}
 
+    Rails.logger.info("Getting connection to MQTT controller ...")
     MQTTControllerService.new(opts).process
   end
 end
