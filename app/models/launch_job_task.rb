@@ -7,7 +7,7 @@ class LaunchJobTask < MqttClientTask
 
   def service_options
     super.tap do |options|
-      options[:service_offering_id] = service_offering_id.to_s
+      options[:service_offering_id] = service_offering.id.to_s
       options[:service_plan_id] = service_plan_id.to_s
       options[:external_url] = output["url"]
       options[:source_ref] = output["id"]
@@ -27,11 +27,11 @@ class LaunchJobTask < MqttClientTask
     end
   end
 
-  def service_offering_id
-    @service_offering_id ||= ServiceOffering.find_by(:source_ref => output["unified_job_template"].to_s).id
+  def service_offering
+    @service_offering ||= ServiceOffering.find_by(:source_ref => output["unified_job_template"].to_s) || raise("Unable to find ServiceOffering")
   end
 
   def service_plan_id
-    ServiceOffering.find(service_offering_id).service_plans.first.id
+    service_offering.service_plans.first.id
   end
 end

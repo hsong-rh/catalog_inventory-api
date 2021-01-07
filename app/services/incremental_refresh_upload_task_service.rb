@@ -3,13 +3,20 @@ class IncrementalRefreshUploadTaskService < TaskService
 
   def initialize(options)
     super
-    @last_successful_refresh_at = options[:last_successful_refresh_at]
+    @last_successful_refresh_at = @options[:last_successful_refresh_at]
   end
 
   def process
     @task = IncrementalRefreshUploadTask.create!(task_options)
 
     self
+  end
+
+  private
+
+  def validate_options
+    super
+    raise("Options must have last_successful_refresh_at key") if @options[:last_successful_refresh_at].blank?
   end
 
   def response_format
@@ -157,6 +164,6 @@ class IncrementalRefreshUploadTaskService < TaskService
   end
 
   def upload_url
-    ENV.fetch("UPLOAD_URL") || raise("UPLOAD_URL must be specified")
+    ENV.fetch("UPLOAD_URL")
   end
 end

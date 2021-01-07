@@ -10,9 +10,7 @@ module Events
     private
 
     def process_event(event)
-      EventRouter.dispatch(event.message, event.payload, event.headers)
-    rescue
-      # TODO handle error
+      EventRouter.dispatch(event.message, event.payload)
     end
   end
 end

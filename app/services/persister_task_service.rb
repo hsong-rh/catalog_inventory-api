@@ -1,6 +1,8 @@
 class PersisterTaskService
   def initialize(options)
     @options = JSON.parse(options).deep_symbolize_keys
+
+    validate_options
     @upload_task = Task.find(@options[:category])
   end
 
@@ -9,6 +11,14 @@ class PersisterTaskService
     KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
 
     self
+  end
+
+  private
+
+  def validate_options
+    unless @options[:category].present? && @options[:url].present? && @options[:size].present?
+      raise("Options must have category, url and size keys")
+    end
   end
 
   def opts

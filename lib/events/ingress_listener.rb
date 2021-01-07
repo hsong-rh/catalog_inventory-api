@@ -10,9 +10,7 @@ module Events
     private
 
     def process_event(event)
-      EventRouter.dispatch("Catalog.upload", event.payload, event.headers)
-    rescue
-      # TODO handle error
+      EventRouter.dispatch("Catalog.upload", event.payload)
     end
   end
 end
