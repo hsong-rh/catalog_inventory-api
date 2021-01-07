@@ -41,7 +41,7 @@ class FullRefreshUploadTaskService < TaskService
       job.href_slug = "#{TOWER_API_VERSION}/job_templates/"
       job.method = "GET"
       job.fetch_all_pages = true
-      job.apply_filter = "results[].{id:id, inventory:inventory, type:type, url:url,created:created,name:name, modified:modified, description:description,survey_spec:related.survey_spec,inventory:related.inventory,survey_enabled:survey_enabled,ask_tags_on_launch:ask_tags_on_launch,ask_limit_on_launch:ask_limit_on_launch,ask_job_type_on_launch:ask_job_type_on_launch,ask_diff_mode_on_launch:ask_diff_mode_on_launch,ask_inventory_on_launch:ask_inventory_on_launch,ask_skip_tags_on_launch:ask_skip_tags_on_launch,ask_variables_on_launch:ask_variables_on_launch,ask_verbosity_on_launch:ask_verbosity_on_launch,ask_credential_on_launch:ask_credential_on_launch}"
+      job.apply_filter = "results[].{id:id, type:type, url:url,created:created,name:name, modified:modified, description:description,survey_spec:related.survey_spec,inventory:related.inventory,survey_enabled:survey_enabled,ask_tags_on_launch:ask_tags_on_launch,ask_limit_on_launch:ask_limit_on_launch,ask_job_type_on_launch:ask_job_type_on_launch,ask_diff_mode_on_launch:ask_diff_mode_on_launch,ask_inventory_on_launch:ask_inventory_on_launch,ask_skip_tags_on_launch:ask_skip_tags_on_launch,ask_variables_on_launch:ask_variables_on_launch,ask_verbosity_on_launch:ask_verbosity_on_launch,ask_credential_on_launch:ask_credential_on_launch}"
       job.fetch_related = fetch_related
     end
   end
@@ -78,7 +78,7 @@ class FullRefreshUploadTaskService < TaskService
       job.href_slug = "#{TOWER_API_VERSION}/workflow_job_templates/"
       job.method = "GET"
       job.fetch_all_pages = true
-      job.apply_filter = "results[].{id:id, inventory:inventory, type:type, url:url,created:created, name:name, modified:modified, description:description, survey_spec:related.survey_spec, inventory:related.inventory, survey_enabled:survey_enabled, ask_inventory_on_launch:ask_inventory_on_launch, ask_variables_on_launch:ask_variables_on_launch}"
+      job.apply_filter = "results[].{id:id, type:type, url:url,created:created, name:name, modified:modified, description:description, survey_spec:related.survey_spec, inventory:related.inventory, survey_enabled:survey_enabled, ask_inventory_on_launch:ask_inventory_on_launch, ask_variables_on_launch:ask_variables_on_launch}"
       job.fetch_related = fetch_related
     end
   end
