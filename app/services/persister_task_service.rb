@@ -7,6 +7,8 @@ class PersisterTaskService
   end
 
   def process
+    return self unless source_enabled?
+
     @task = FullRefreshPersisterTask.create!(opts)
     KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
 
@@ -19,6 +21,10 @@ class PersisterTaskService
     unless @options[:category].present? && @options[:url].present? && @options[:size].present?
       raise("Options must have category, url and size keys")
     end
+  end
+
+  def source_enabled?
+    Source.find_by(:id => @upload_task.source_id)&.enabled
   end
 
   def opts

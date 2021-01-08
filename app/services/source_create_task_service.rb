@@ -1,5 +1,7 @@
 class SourceCreateTaskService < TaskService
   def process
+    return if ENV["SOURCE_TYPE_ID"].blank? || ENV["SOURCE_TYPE_ID"] != @options[:source_type_id]
+
     Source.create!(source_options)
   end
 

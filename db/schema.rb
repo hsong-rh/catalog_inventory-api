@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_22_201453) do
+ActiveRecord::Schema.define(version: 2021_01_07_222354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2020_12_22_201453) do
     t.string "availability_status"
     t.datetime "last_checked_at"
     t.datetime "last_available_at"
+    t.boolean "enabled", default: false
     t.index ["tenant_id", "uid"], name: "index_sources_on_tenant_id_and_uid", unique: true
   end
 

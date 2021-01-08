@@ -3285,12 +3285,20 @@
           "info": {
             "example": "The version of Tower being used",
             "title": "Info",
+            "readOnly": true,
             "type": "object"
           },
           "mqtt_client_id": {
             "example": "The GUID of MQTT client being used",
             "title": "MqttClientId",
+            "readOnly": true,
             "type": "string"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": false,
+            "readOnly": true
           },
           "refresh_state": {
             "type": "string"
