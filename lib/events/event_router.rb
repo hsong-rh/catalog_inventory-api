@@ -8,6 +8,10 @@ module Events
         SourceCreateTaskService.new(payload).process
       when "Source.destroy"
         SourceDestroyTaskService.new(payload).process
+      when "Application.create"
+        ApplicationTaskService.new(payload.merge(:enabled => true)).process
+      when "Application.destroy"
+        ApplicationTaskService.new(payload.merge(:enabled => false)).process
       when "Source.availability_check"
         task = CheckAvailabilityTaskService.new(payload["params"]).process.task
         task.dispatch

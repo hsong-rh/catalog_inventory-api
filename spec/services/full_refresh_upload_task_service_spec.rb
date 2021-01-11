@@ -1,7 +1,7 @@
 describe FullRefreshUploadTaskService do
   include ::Spec::Support::TenantIdentity
 
-  let(:source) { FactoryBot.create(:source, :tenant => tenant) }
+  let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => true) }
   let(:params) { {'external_tenant' => tenant.external_tenant, :source_id => source.id} }
   let(:subject) { described_class.new(params) }
 

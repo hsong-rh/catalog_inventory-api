@@ -28,6 +28,10 @@ class TaskService
     @options[:source_id]
   end
 
+  def source_enabled?
+    Source.find_by(:id => source_id)&.enabled
+  end
+
   def fetch_related
     [{:href_slug => "survey_spec", :predicate => "survey_enabled"}]
   end
