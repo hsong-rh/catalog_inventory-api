@@ -18,6 +18,7 @@ gem 'puma',                            '~> 4.3.5', '>= 4.3.5'
 gem 'rack-cors',                       '>= 1.0.4'
 gem 'rails',                           '>= 5.2.2.1', '~> 5.2.2'
 gem 'sources-api-client',              '~> 1.0'
+gem 'paho-mqtt'
 
 group :development, :test do
   gem "byebug", :platform => :mri
