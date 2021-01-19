@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_07_222354) do
+ActiveRecord::Schema.define(version: 2021_01_19_183553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -25,9 +25,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.string "kind"
     t.string "namespace"
     t.string "source_ref", null: false
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "archived_at"
@@ -47,9 +44,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.string "name"
     t.string "type_name"
     t.text "description"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "archived_at"
@@ -86,9 +80,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.string "source_ref", null: false
     t.string "name"
     t.jsonb "extra"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "archived_at"
@@ -129,9 +120,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.datetime "source_deleted_at"
     t.datetime "source_created_at"
     t.datetime "archived_at"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "last_seen_at"
     t.string "external_url"
     t.bigint "service_inventory_id"
@@ -155,9 +143,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.string "name"
     t.text "description"
     t.jsonb "extra"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "archived_at"
@@ -217,9 +202,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.string "source_ref", null: false
     t.string "name"
     t.jsonb "extra"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "archived_at"
@@ -271,9 +253,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.datetime "source_deleted_at"
     t.datetime "source_created_at"
     t.datetime "archived_at"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "last_seen_at"
     t.string "display_name"
     t.string "documentation_url"
@@ -305,9 +284,6 @@ ActiveRecord::Schema.define(version: 2021_01_07_222354) do
     t.jsonb "create_json_schema"
     t.jsonb "update_json_schema"
     t.datetime "archived_at"
-    t.datetime "resource_timestamp"
-    t.jsonb "resource_timestamps", default: {}
-    t.datetime "resource_timestamps_max"
     t.datetime "last_seen_at"
     t.index ["archived_at"], name: "index_service_plans_on_archived_at"
     t.index ["last_seen_at"], name: "index_service_plans_on_last_seen_at"
