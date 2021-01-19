@@ -4,7 +4,7 @@ class SourceDestroyTaskService
   end
 
   def process
-    return if ENV["SOURCE_TYPE_ID"].blank? || ENV["SOURCE_TYPE_ID"] != @options[:source_type_id]
+    return if ClowderConfig.instance["SOURCE_TYPE_ID"].blank? || ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id]
 
     validate_options
     Source.destroy(@options[:source_id].to_i)

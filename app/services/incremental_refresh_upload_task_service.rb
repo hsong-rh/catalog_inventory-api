@@ -34,6 +34,10 @@ class IncrementalRefreshUploadTaskService < TaskService
     end
   end
 
+  def tenant
+    Tenant.find(@options[:tenant_id])
+  end
+
   def jobs
     jobs = []
     jobs << templates_jobs
@@ -164,6 +168,6 @@ class IncrementalRefreshUploadTaskService < TaskService
   end
 
   def upload_url
-    ENV.fetch("UPLOAD_URL")
+    ClowderConfig.instance["UPLOAD_URL"]
   end
 end

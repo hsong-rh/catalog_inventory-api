@@ -22,8 +22,8 @@ class PostCheckAvailabilityTaskService < TaskService
   end
 
   def update_source
-    update_opts = {:availability_status => source_status, :last_checked_at => @task.created_at}
-    update_opts.merge!(:last_available_at => @task.created_at, :info => @options[:output]) if @task.status == "ok"
+    update_opts = {:availability_status => source_status, :last_checked_at => @task.created_at.iso8601}
+    update_opts.merge!(:last_available_at => @task.created_at.iso8601, :info => @options[:output]) if @task.status == "ok"
 
     @source.update!(update_opts)
   end

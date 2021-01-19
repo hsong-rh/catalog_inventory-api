@@ -15,7 +15,6 @@ module InitTypesEnvs
     source_type_id = source_types.try(:data).try(:first).try(:id)
     application_type_id = application_types.try(:data).try(:first).try(:id)
 
-    ENV["SOURCE_TYPE_ID"]      = source_type_id
-    ENV["APPLICATION_TYPE_ID"] = application_type_id
+    ClowderConfig.instance.merge!("SOURCE_TYPE_ID" => source_type_id, "APPLICATION_TYPE_ID" => application_type_id)
   end
 end

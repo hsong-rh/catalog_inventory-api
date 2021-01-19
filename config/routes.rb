@@ -4,9 +4,8 @@ Rails.application.routes.draw do
 
   routing_helper = Insights::API::Common::Routing.new(self)
   prefix = "api"
-  if ENV["PATH_PREFIX"].present? && ENV["APP_NAME"].present?
-    prefix = File.join(ENV["PATH_PREFIX"], ENV["APP_NAME"]).gsub(/^\/+|\/+$/, "")
-  end
+
+  prefix = File.join(ClowderConfig.instance["PATH_PREFIX"], ClowderConfig.instance["APP_NAME"]).gsub(/^\/+|\/+$/, "")
 
   get "/health", :to => "status#health"
 
