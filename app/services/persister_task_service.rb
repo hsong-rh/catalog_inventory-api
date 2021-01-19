@@ -51,7 +51,7 @@ class PersisterTaskService
 
   def task_url
     host = ENV.fetch("CATALOG_INVENTORY_INTERNAL_URL")
-    app_version = ENV["CURRENT_API_VERSION"] || "v3.0"
+    app_version = ENV["CURRENT_API_VERSION"] || "v1.0"
 
     File.join(host, ENV["PATH_PREFIX"], ENV["APP_NAME"], app_version, "tasks", @task.id).gsub(/^\/+|\/+$/, "")
   end

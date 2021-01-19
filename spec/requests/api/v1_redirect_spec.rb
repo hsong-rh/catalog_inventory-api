@@ -5,7 +5,7 @@ RSpec.describe("v1 redirects") do
   let(:major_version)    { expected_version.match(/^(v[\d]+)\.[\d]+$/)[1] }
   let(:headers)          { {"CONTENT_TYPE" => "application/json", "x-rh-identity" => identity} }
 
-  describe("/api/v1") do
+  describe("/api/v3") do
     it "redirects to the latest minor version" do
       get("/api/#{major_version}/vms", :headers => headers)
       expect(response.status).to eq(302)

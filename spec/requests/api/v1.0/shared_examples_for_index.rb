@@ -36,10 +36,13 @@ RSpec.shared_examples "v1x0_test_index_and_subcollections" do |primary_collectio
 
         get(instance_path(instance.id), :headers => headers)
 
+        response_attributes = attributes.except("tenant_id")
+        response_attributes.merge("id" => instance.id.to_s) unless primary_collection == "tags"
+
         expect(response).to have_attributes(
                               :status      => 200,
-                              :parsed_body => a_hash_including(attributes.merge("id" => instance.id.to_s).except("tenant_id"))
-                            )
+                              :parsed_body => a_hash_including(response_attributes)
+                             )
       end
 
       it "failure: with an invalid id" do
