@@ -8,7 +8,7 @@ RSpec.describe("v1.0 - Tag") do
   let(:attributes) do
     {
       "tenant_id" => tenant.id.to_s,
-      "name"      => SecureRandom.uuid
+      "tag"       => "/namespace/key=value"
     }
   end
 
@@ -16,7 +16,7 @@ RSpec.describe("v1.0 - Tag") do
     "v1x0_test_index_and_subcollections",
     "tags",
     [
-     :service_inventories,
+      :service_inventories,
       :service_offerings,
     ],
   )
