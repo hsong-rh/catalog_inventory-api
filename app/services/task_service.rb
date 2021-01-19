@@ -9,7 +9,7 @@ class TaskService
   private
 
   def validate_options
-    raise("Options must have source_id and external_tenant keys") unless @options[:source_id].present? && @options[:external_tenant].present?
+    raise("Options must have source_id") unless @options[:source_id].present?
   end
 
   def task_input
