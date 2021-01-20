@@ -1,3 +1,5 @@
+require 'paho-mqtt'
+
 class MQTTControllerService
   def initialize(options)
     @options = options.deep_symbolize_keys
@@ -11,12 +13,13 @@ class MQTTControllerService
 
   # TODO: will replace by the mqtt controller in cluster
   def process
-    Rails.logger.info("publish: #{publish}")
-    exit_status = system(publish)
-    Rails.logger.info("exit_status: #{exit_status}")
+    Rails.logger.info("publish: #{payload}")
+    publish
   end
 
   private
+
+
 
   def validate_options
     unless @options[:task_id].present? && @options[:task_url].present? && @options[:mqtt_client_url].present? && @options[:mqtt_client_guid].present?
@@ -25,7 +28,26 @@ class MQTTControllerService
   end
 
   def publish
-    "mosquitto_pub -L #{@mqtt_client_url}/out/#{@mqtt_client_guid} -m '" + "#{payload}'"
+    u = URI.parse(@mqtt_client_url)
+    client = PahoMqtt::Client.new
+    client.connect(u.host, u.port)
+    ### Register a callback for puback event when receiving a puback
+    waiting_puback = true
+    client.on_puback do
+      waiting_puback = false
+      puts "Message Acknowledged"
+    end
+
+    ### Publlish a message on the topic "/paho/ruby/test" with "retain == false" and "qos == 1"
+    client.publish("out/#{@mqtt_client_guid}", "#{payload}", false, 1)
+
+    while waiting_puback do
+      sleep 0.001
+    end
+    sleep 1
+    client.disconnect
+  rescue => error
+    Rails.logger.error("Error publishing MQTT Message #{@mqtt_client_guid} #{error}")
   end
 
   def payload
