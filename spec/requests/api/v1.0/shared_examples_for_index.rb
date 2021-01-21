@@ -1,7 +1,9 @@
 RSpec.shared_examples "v1x0_test_index_and_subcollections" do |primary_collection, subcollections|
-  let(:collection_path) { "/api/v1.0/#{primary_collection}" }
+  include ::V1x0Helper
 
-  describe("/api/v1.0/#{primary_collection}") do
+  let(:collection_path) { "#{api_version}/#{primary_collection}" }
+
+  describe("#{primary_collection}") do
     context "get" do
       it "success: empty collection" do
         get(collection_path, :headers => headers)
@@ -25,7 +27,7 @@ RSpec.shared_examples "v1x0_test_index_and_subcollections" do |primary_collectio
     end
   end
 
-  describe("/api/v1.0/#{primary_collection}/:id") do
+  describe("#{primary_collection}/:id") do
     def instance_path(id)
       File.join(collection_path, id.to_s)
     end
@@ -70,7 +72,7 @@ RSpec.shared_examples "v1x0_test_index_and_subcollections" do |primary_collectio
 
   describe("subcollections") do
     subcollections.each do |subcollection|
-      describe("/api/v1.0/#{primary_collection}/:id/#{subcollection.to_s}") do
+      describe("#{primary_collection}/:id/#{subcollection.to_s}") do
         let(:subcollection) { subcollection.to_s }
 
         def subcollection_path(id)

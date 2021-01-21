@@ -5,10 +5,8 @@ describe SourceDestroyTaskService do
   let(:params) { {'source_id' => source.id, 'source_type_id' => "10"} }
   let(:subject) { described_class.new(params) }
 
-  around do |example|
-    with_modified_env(:SOURCE_TYPE_ID => "10") do
-      Insights::API::Common::Request.with_request(default_request) { example.call }
-    end
+  before do
+    allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => "10"})
   end
 
   describe "#process" do

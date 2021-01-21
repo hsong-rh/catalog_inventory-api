@@ -1,10 +1,12 @@
 RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
-  let(:collection_path) { "/api/v1.0/#{primary_collection}" }
+  include ::V1x0Helper
+
+  let(:collection_path) { "#{api_version}/#{primary_collection}" }
   let(:instance)        { primary_collection.singularize.camelize.constantize.create!(attributes) }
 
   describe("tags_subcollections") do
-    describe("/api/v1.0/#{primary_collection}/:id/tags") do
-      let(:tags_subcollection) { "/api/v1.0/#{primary_collection}/#{instance.id}/tags" }
+    describe("#{primary_collection}/:id/tags") do
+      let(:tags_subcollection) { "#{api_version}/#{primary_collection}/#{instance.id}/tags" }
 
       context "get" do
         it "success: no tags" do
@@ -30,7 +32,7 @@ RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
       end
 
       context "tag" do
-        let(:instance_tag_url) { "/api/v1.0/#{primary_collection}/#{instance.id}/tag" }
+        let(:instance_tag_url) { "#{api_version}/#{primary_collection}/#{instance.id}/tag" }
 
         it "not yet tagged" do
           payload = [{"tag" => "/a/b/c=d"}]
@@ -38,7 +40,7 @@ RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
 
           expect(response).to have_attributes(
             :status => 201,
-            :location => "http://www.example.com/api/v1.0/#{primary_collection}/#{instance.id}/tags",
+            :location => "http://www.example.com#{api_version}/#{primary_collection}/#{instance.id}/tags",
             :parsed_body => payload
           )
         end
@@ -51,7 +53,7 @@ RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
 
           expect(response).to have_attributes(
             :status => 304,
-            :location => "http://www.example.com/api/v1.0/#{primary_collection}/#{instance.id}/tags",
+            :location => "http://www.example.com#{api_version}/#{primary_collection}/#{instance.id}/tags",
             :parsed_body => ""
           )
         end
@@ -64,7 +66,7 @@ RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
 
           expect(response).to have_attributes(
             :status => 201,
-            :location => "http://www.example.com/api/v1.0/#{primary_collection}/#{instance.id}/tags",
+            :location => "http://www.example.com#{api_version}/#{primary_collection}/#{instance.id}/tags",
             :parsed_body => [{"tag" => "/a/b/c=d"}, {"tag" => "/x/y/z=1"}]
           )
         end
@@ -80,11 +82,11 @@ RSpec.shared_examples "v1x0_test_tags_subcollection" do |primary_collection|
 
           expect(instance.tags.reload).to match_array([tag_1, tag_2])
 
-          post("/api/v1.0/#{primary_collection}/#{instance.id}/untag", :params => payload.to_json, :headers => headers)
+          post("#{api_version}/#{primary_collection}/#{instance.id}/untag", :params => payload.to_json, :headers => headers)
 
           expect(response).to have_attributes(
             :status => 204,
-            :location => "http://www.example.com/api/v1.0/#{primary_collection}/#{instance.id}/tags",
+            :location => "http://www.example.com#{api_version}/#{primary_collection}/#{instance.id}/tags",
             :parsed_body => ""
           )
 

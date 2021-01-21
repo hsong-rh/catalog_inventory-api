@@ -68,10 +68,6 @@ Rails.application.routes.draw do
       end
       resources :tasks, :only => [:index, :show, :update]
     end
-
-    namespace :cfme do
-      resources :manifest, :only => [:show], :constraints => {:id => /[\d\.]+/}
-    end
   end
 
   scope :as => :internal, :module => "internal", :path => "internal" do

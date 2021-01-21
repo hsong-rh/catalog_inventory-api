@@ -15,8 +15,4 @@ class Tenant < ApplicationRecord
   has_many :sources
   has_many :tags
   has_many :tasks
-
-  def self.tenancy_enabled?
-    ClowderConfig.instance["BYPASS_TENANCY"].blank?
-  end
 end

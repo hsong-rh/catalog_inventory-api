@@ -2,6 +2,7 @@ require_relative "shared_examples_for_index"
 
 RSpec.describe("v1.0 - ServiceOfferingIcon") do
   include ::Spec::Support::TenantIdentity
+  include ::V1x0Helper
 
   let(:headers) { {"CONTENT_TYPE" => "application/json", "x-rh-identity" => identity} }
   let(:source) { Source.create!(:tenant => tenant) }
@@ -26,10 +27,10 @@ RSpec.describe("v1.0 - ServiceOfferingIcon") do
     [],
   )
 
-  describe("/api/v1.0/service_offering_icons/:id/icon_data") do
+  describe("service_offering_icons/:id/icon_data") do
     let(:primary_collection) { "service_offering_icons" }
     let(:subcollection) { "icon_data" }
-    let(:collection_path) { "/api/v1.0/#{primary_collection}" }
+    let(:collection_path) { "#{api_version}/#{primary_collection}" }
 
     def subcollection_path(id)
       File.join(collection_path, id.to_s, subcollection)
