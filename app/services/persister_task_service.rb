@@ -10,6 +10,7 @@ class PersisterTaskService
     return self unless source_enabled?
 
     @task = FullRefreshPersisterTask.create!(opts)
+    ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
     KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
 
     self
