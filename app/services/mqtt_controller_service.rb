@@ -1,4 +1,4 @@
-require 'paho-mqtt'
+require 'mqtt'
 
 class MQTTControllerService
   def initialize(options)
@@ -29,21 +29,16 @@ class MQTTControllerService
 
   def publish
     u = URI.parse(@mqtt_client_url)
-    client = PahoMqtt::Client.new
-    client.connect(u.host, u.port)
-    ### Register a callback for puback event when receiving a puback
-    waiting_puback = true
-    client.on_puback do
-      waiting_puback = false
-      puts "Message Acknowledged"
+    client = MQTT::Client.new
+    if u.scheme == "mqtts"
+      client.ssl = true
     end
-
+    client.host = u.host
+    client.port = u.port
+    client.connect
     ### Publlish a message on the topic "/paho/ruby/test" with "retain == false" and "qos == 1"
     client.publish("out/#{@mqtt_client_guid}", "#{payload}", false, 1)
 
-    while waiting_puback do
-      sleep 0.001
-    end
     sleep 1
     client.disconnect
   rescue => error
