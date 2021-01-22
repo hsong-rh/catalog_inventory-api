@@ -1,5 +1,7 @@
 RSpec.describe("::Insights::API::Common::Filter") do
   include ::Spec::Support::TenantIdentity
+  include ::V1x0Helper
+
   let(:headers) { {"CONTENT_TYPE" => "application/json", "x-rh-identity" => identity} }
 
   def create_task(attrs = {})
@@ -17,7 +19,7 @@ RSpec.describe("::Insights::API::Common::Filter") do
   end
 
   def expect_collection_query_failure(collection, query, *errors)
-    get(URI.escape("/api/v1.0/#{collection}?#{query}"), :headers => headers)
+    get(URI.escape("#{api_version}/#{collection}?#{query}"), :headers => headers)
 
     expect(response).to have_attributes(
       :parsed_body => {
@@ -28,7 +30,7 @@ RSpec.describe("::Insights::API::Common::Filter") do
   end
 
   def expect_success(query, *results)
-    get(URI.escape("/api/v1.0/tasks?#{query}"), :headers => headers)
+    get(URI.escape("#{api_version}/tasks?#{query}"), :headers => headers)
 
     expect(response).to have_attributes(
       :parsed_body => paginated_response(results.length, results.collect { |i| a_hash_including("id" => i.id.to_s) }),
@@ -37,7 +39,7 @@ RSpec.describe("::Insights::API::Common::Filter") do
   end
 
   def expect_tag_success(instance, query, *results)
-    get(URI.escape("/api/v1.0/#{instance.class.name.underscore.pluralize}/#{instance.id}/tags?#{query}"), :headers => headers)
+    get(URI.escape("#{api_version}/#{instance.class.name.underscore.pluralize}/#{instance.id}/tags?#{query}"), :headers => headers)
 
     expect(response).to have_attributes(
       :parsed_body => paginated_response(results.length, results.collect { |i| a_hash_including("tag" => i.to_tag_string) }),
@@ -126,7 +128,7 @@ RSpec.describe("::Insights::API::Common::Filter") do
     it "does not display #tenant_id" do
       task = create_task
 
-      get("/api/v1.0/tasks/#{task.id}")
+      get("#{api_version}/tasks/#{task.id}")
 
       expect(response.parsed_body.keys).not_to include("tenant_id")
     end

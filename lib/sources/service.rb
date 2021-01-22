@@ -13,8 +13,8 @@ module Sources
 
     private_class_method def self.raw_api
       SourcesApiClient.configure do |config|
-        config.host = ENV['SOURCES_URL'] || 'localhost'
-        config.scheme = URI.parse(ENV['SOURCES_URL']).try(:scheme) || 'http'
+        config.host = ClowderConfig.instance['SOURCES_URL'] || 'localhost'
+        config.scheme = URI.parse(ClowderConfig.instance['SOURCES_URL']).try(:scheme) || 'http'
         if Rails.env.development?
           config.username = ENV['DEV_USERNAME'] || raise("Empty ENV variable: DEV_USERNAME")
           config.password = ENV['DEV_PASSWORD'] || raise("Empty ENV variable: DEV_PASSWORD")

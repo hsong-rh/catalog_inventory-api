@@ -1,4 +1,6 @@
 RSpec.describe("v1.0 - GraphQL") do
+  include ::V1x0Helper
+
   let!(:ext_tenant_a)   { rand(1000).to_s }
   let!(:identity_a) { Base64.encode64({'identity' => { 'account_number' => ext_tenant_a }}.to_json) }
   let!(:tenant_a)   { Tenant.create!(:name => "tenant_a", :external_tenant => ext_tenant_a) }
@@ -16,12 +18,10 @@ RSpec.describe("v1.0 - GraphQL") do
   end
 
   context "with tenancy enforcement" do
-    before { stub_const("ENV", "BYPASS_TENANCY" => nil) }
-
     it "querying sources as tenant_a only return tenant_a's sources" do
       headers = { "CONTENT_TYPE" => "application/json", "x-rh-identity" => identity_a }
 
-      post("/api/v1.0/graphql", :headers => headers, :params => graphql_source_query)
+      post("#{api_version}/graphql", :headers => headers, :params => graphql_source_query)
 
       expect(response.status).to eq(200)
       expect(result_source_ids(response.body)).to match_array([source_a.id])
@@ -30,23 +30,10 @@ RSpec.describe("v1.0 - GraphQL") do
     it "querying sources as tenant_b only return tenant_b's sources" do
       headers = { "CONTENT_TYPE" => "application/json", "x-rh-identity" => identity_b }
 
-      post("/api/v1.0/graphql", :headers => headers, :params => graphql_source_query)
+      post("#{api_version}/graphql", :headers => headers, :params => graphql_source_query)
 
       expect(response.status).to eq(200)
       expect(result_source_ids(response.body)).to match_array([source_b.id])
-    end
-  end
-
-  context "without tenancy enforcement" do
-    before { stub_const("ENV", "BYPASS_TENANCY" => "true") }
-
-    it "querying sources without identity returns all sources" do
-      headers = { "CONTENT_TYPE" => "application/json" }
-
-      post("/api/v1.0/graphql", :headers => headers, :params => graphql_source_query)
-
-      expect(response.status).to eq(200)
-      expect(result_source_ids(response.body)).to match_array([source_a.id, source_b.id])
     end
   end
 end

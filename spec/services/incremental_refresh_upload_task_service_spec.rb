@@ -2,16 +2,18 @@ describe IncrementalRefreshUploadTaskService do
   include ::Spec::Support::TenantIdentity
 
   let(:source) { FactoryBot.create(:source, :tenant => tenant) }
-  let(:params) { {'external_tenant' => tenant.external_tenant, :source_id => source.id, :last_successful_refresh_at => Time.current.to_s} }
+  let(:params) { {'tenant_id' => tenant.id, :source_id => source.id, :last_successful_refresh_at => Time.current.to_s} }
   let(:subject) { described_class.new(params) }
 
   around do |example|
-    with_modified_env(:UPLOAD_URL => "http://www.upload_url.com") do
-      Insights::API::Common::Request.with_request(default_request) { example.call }
-    end
+    Insights::API::Common::Request.with_request(default_request) { example.call }
   end
 
   describe "#process" do
+    before do
+      allow(ClowderConfig).to receive(:instance).and_return({"UPLOAD_URL" => "http://www.upload_url.com"})
+    end
+
     it "returns IncrementalRefreshUploadTask" do
       task = subject.process.task
 

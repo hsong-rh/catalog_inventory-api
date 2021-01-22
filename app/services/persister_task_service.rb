@@ -50,9 +50,9 @@ class PersisterTaskService
   end
 
   def task_url
-    host = ENV.fetch("CATALOG_INVENTORY_INTERNAL_URL")
-    app_version = ENV["CURRENT_API_VERSION"] || "v1.0"
+    host = ClowderConfig.instance["CATALOG_INVENTORY_INTERNAL_URL"]
+    app_version = ClowderConfig.instance["CURRENT_API_VERSION"] || "v1.0"
 
-    File.join(host, ENV["PATH_PREFIX"], ENV["APP_NAME"], app_version, "tasks", @task.id).gsub(/^\/+|\/+$/, "")
+    File.join(host, ClowderConfig.instance["PATH_PREFIX"], ClowderConfig.instance["APP_NAME"], app_version, "tasks", @task.id).gsub(/^\/+|\/+$/, "")
   end
 end

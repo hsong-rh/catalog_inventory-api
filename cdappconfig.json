@@ -1,0 +1,60 @@
+{
+    "kafka": {
+        "brokers": [
+            {
+                "hostname": "catalog_inventory-env-kafka.clowder-system.svc",
+                "port": 29092
+            }
+        ],
+        "topics": [
+            {
+                "name": "platform.upload.catalog-catalog_inventory-env-clowder-system",
+                "requestedName": "platform.upload.catalog"
+            },
+            {
+                "name": "platform.sources.event-stream-catalog_inventory-env-clowder-system",
+                "requestedName": "platform.sources.event-stream"
+            },
+            {
+                "name": "platform.topological-inventory.operations-ansible-tower-catalog_inventory-env-clowder-system",
+                "requestedName": "platform.topological-inventory.operations-ansible-tower"
+            }
+        ]
+    },
+    "logging": {
+        "cloudwatch": {
+            "accessKeyId": "",
+            "logGroup": "",
+            "region": "",
+            "secretAccessKey": ""
+        },
+        "type": "null"
+    },
+    "metricsPath": "/metrics",
+    "metricsPort": 9000,
+    "database": {
+        "name": "dBaseName",
+        "username": "username",
+        "password": "password",
+        "hostname": "hostname",
+        "port": 5432,
+        "adminUsername": "adminusername",
+        "adminPassword": "adminpassword",
+        "rdsCa": "ca"
+    },
+    "webPort": 3000,
+    "endpoints": [
+        {
+            "name": "ingress",
+            "app": "ingress",
+            "hostname": "ingress.svc",
+            "port": 8000
+        },
+        {
+            "name": "source",
+            "app": "source",
+            "hostname": "source.svc",
+            "port": 3000
+        }
+    ]
+}

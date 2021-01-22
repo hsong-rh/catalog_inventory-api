@@ -6,12 +6,14 @@ describe FullRefreshUploadTaskService do
   let(:subject) { described_class.new(params) }
 
   around do |example|
-    with_modified_env(:UPLOAD_URL => "http://www.upload_url.com") do
-      Insights::API::Common::Request.with_request(default_request) { example.call }
-    end
+    Insights::API::Common::Request.with_request(default_request) { example.call }
   end
 
   describe "#process" do
+    before do
+      allow(ClowderConfig).to receive(:instance).and_return({"UPLOAD_URL" => "http://www.upload_url.com"})
+    end
+
     it "returns FullRefreshUploadTask" do
       task = subject.process.task
 

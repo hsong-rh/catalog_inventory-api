@@ -98,6 +98,6 @@ class FullRefreshUploadTaskService < TaskService
   end
 
   def upload_url
-    ENV.fetch("UPLOAD_URL")
+    ClowderConfig.instance["UPLOAD_URL"]
   end
 end

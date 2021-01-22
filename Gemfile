@@ -4,6 +4,7 @@ plugin "bundler-inject", "~> 1.1"
 require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundler-inject") rescue nil
 
 gem 'activerecord-virtual_attributes', '~> 1.5'
+gem 'app-common-ruby', :git => "https://github.com/RedHatInsights/app-common-ruby", :branch => "master", :require => false
 gem 'cloudwatchlogger',                '~> 0.2.1'
 gem 'insights-api-common',             '~> 4.0'
 gem 'jbuilder',                        '~> 2.0'
