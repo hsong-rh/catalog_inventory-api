@@ -1,7 +1,5 @@
 class SourceCreateTaskService < TaskService
   def process
-    Rails.logger.info("SOURCE TYPE ID #{ClowderConfig.instance["SOURCE_TYPE_ID"]}")
-    Rails.logger.info("OPTIONS SOURCE TYPE ID #{@options[:source_type_id]}")
     return if ClowderConfig.instance["SOURCE_TYPE_ID"].blank? || ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id].to_s
 
     Rails.logger.info("Creating Source")
@@ -14,7 +12,7 @@ class SourceCreateTaskService < TaskService
 
   def source_options
     {}.tap do |options|
-      options[:tenant_id] = tenant.id
+      options[:tenant] = Tenant.where(:external_tenant => @options[:tenant]).first
       options[:id] = @options[:id]
       options[:uid] = @options[:source_uid]
     end
