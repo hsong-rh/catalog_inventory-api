@@ -3,6 +3,7 @@ class SourceCreateTaskService < TaskService
     return if ClowderConfig.instance["SOURCE_TYPE_ID"].blank? || ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id]
 
     Source.create!(source_options)
+    ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
   end
 
   private
