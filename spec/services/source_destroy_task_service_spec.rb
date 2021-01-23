@@ -2,7 +2,7 @@ describe SourceDestroyTaskService do
   include ::Spec::Support::TenantIdentity
 
   let!(:source) { FactoryBot.create(:source, :tenant => tenant) }
-  let(:params) { {'source_id' => source.id, 'source_type_id' => "10"} }
+  let(:params) { {'id' => source.id, 'source_type_id' => "10"} }
   let(:subject) { described_class.new(params) }
 
   before do

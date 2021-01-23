@@ -11,8 +11,12 @@ class SourceCreateTaskService < TaskService
   def source_options
     {}.tap do |options|
       options[:tenant_id] = tenant.id
-      options[:id] = @options[:source_id]
+      options[:id] = @options[:id]
       options[:uid] = @options[:source_uid]
     end
+  end
+
+  def validate_options
+    raise("Options must have id") unless @options[:id].present?
   end
 end
