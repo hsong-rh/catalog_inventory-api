@@ -9,7 +9,7 @@ describe SourceCreateTaskService do
 
   describe "#process" do
     context "when source_type_id matches the environment" do
-      let(:params) { {'id' => '200', 'source_type_id' => "10", 'external_tenant' => tenant.external_tenant, 'source_uid' => SecureRandom.uuid} }
+      let(:params) { {'id' => '200', 'source_type_id' => 10, 'external_tenant' => tenant.external_tenant, 'source_uid' => SecureRandom.uuid} }
 
       it "should create a Source" do
         subject.process
