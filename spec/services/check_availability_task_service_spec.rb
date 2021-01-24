@@ -28,7 +28,7 @@ describe CheckAvailabilityTaskService do
       let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => false) }
 
       it "returns nil task" do
-        expect(subject.process.task).to be_nil
+        expect{ subject.process.task }.to raise_error(StandardError, /is disabled/)
       end
     end
   end
