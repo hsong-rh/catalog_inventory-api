@@ -2,16 +2,14 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
-    unless source_enabled?
-      Rails.logger.debug("Source #{source_id} is disabled")
-      return self
-    end
+    raise "Source #{source_id} is disabled" unless source_enabled?
 
     @task = CheckAvailabilityTask.create!(task_options)
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
     self
   rescue => e
     Rails.logger.error("Failed to create task: #{e.message}")
+    raise
   end
 
   private
