@@ -1,6 +1,6 @@
 class SourceCreateTaskService < TaskService
   def process
-    return if ClowderConfig.instance["SOURCE_TYPE_ID"].blank? || ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id].to_s
+    return if ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id]
 
     Rails.logger.info("Creating Source")
     Source.create!(source_options)

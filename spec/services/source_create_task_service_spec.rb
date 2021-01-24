@@ -2,7 +2,7 @@ describe SourceCreateTaskService do
   let(:subject) { described_class.new(params) }
 
   before do
-    allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => "10"})
+    allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => 10})
   end
 
   around do |example|
@@ -26,7 +26,7 @@ describe SourceCreateTaskService do
       end
     end
 
-    context "when source_type_id doee not matches the environment" do
+    context "when source_type_id does not match the environment" do
       let(:params) { {'id' => 200, 'uid' => SecureRandom.uuid, 'name' => 'xyz'} }
 
       it "should do nothing" do
