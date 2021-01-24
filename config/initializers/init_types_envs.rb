@@ -12,8 +12,8 @@ module InitTypesEnvs
       api_instance.list_application_types(:filter => {:name => APPLICATION_TYPE_NAME})
     end
 
-    source_type_id = source_types.try(:data).try(:first).try(:id)
-    application_type_id = application_types.try(:data).try(:first).try(:id)
+    source_type_id = source_types.try(:data).try(:first).try(:id).to_i
+    application_type_id = application_types.try(:data).try(:first).try(:id).to_i
     Rails.logger.info("Source Type ID #{source_type_id} Application_type_id #{application_type_id}")
     ClowderConfig.instance.merge!("SOURCE_TYPE_ID" => source_type_id, "APPLICATION_TYPE_ID" => application_type_id)
   end

@@ -2,11 +2,11 @@ describe SourceDestroyTaskService do
   include ::Spec::Support::TenantIdentity
 
   let!(:source) { FactoryBot.create(:source, :tenant => tenant) }
-  let(:params) { {'id' => source.id, 'source_type_id' => "10"} }
+  let(:params) { {'id' => source.id, 'source_type_id' => 10} }
   let(:subject) { described_class.new(params) }
 
   before do
-    allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => "10"})
+    allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => 10})
   end
 
   describe "#process" do
