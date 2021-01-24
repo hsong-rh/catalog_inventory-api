@@ -14,20 +14,20 @@ describe SourceCreateTaskService do
 
   describe "#process" do
     context "when source_type_id matches the environment" do
-      let(:params) { {'id' => '200', 'source_type_id' => 10, 'source_uid' => SecureRandom.uuid} }
+      let(:params) { {'id' => 200, 'source_type_id' => 10, 'uid' => SecureRandom.uuid, 'name' => 'xyz'} }
 
       it "should create a Source" do
         subject.process
 
         expect(Source.count).to eq(1)
-        expect(Source.first.id.to_s).to eq(params["id"])
-        expect(Source.first.uid).to eq(params["source_uid"])
+        expect(Source.first.id).to eq(params["id"])
+        expect(Source.first.uid).to eq(params["uid"])
         expect(Source.first.enabled).to be_falsey
       end
     end
 
     context "when source_type_id doee not matches the environment" do
-      let(:params) { {'id' => '200', 'source_uid' => SecureRandom.uuid} }
+      let(:params) { {'id' => 200, 'uid' => SecureRandom.uuid, 'name' => 'xyz'} }
 
       it "should do nothing" do
         subject.process
