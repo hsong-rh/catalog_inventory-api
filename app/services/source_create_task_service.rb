@@ -12,7 +12,6 @@ class SourceCreateTaskService < TaskService
 
   def source_options
     {}.tap do |options|
-      options[:tenant] = Tenant.where(:external_tenant => @options[:tenant]).first
       options[:id] = @options[:id]
       options[:uid] = @options[:source_uid]
     end

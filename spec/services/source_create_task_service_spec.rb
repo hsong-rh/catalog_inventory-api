@@ -1,15 +1,20 @@
 describe SourceCreateTaskService do
-  include ::Spec::Support::TenantIdentity
-
   let(:subject) { described_class.new(params) }
 
   before do
     allow(ClowderConfig).to receive(:instance).and_return({"SOURCE_TYPE_ID" => "10"})
   end
 
+  around do |example|
+    Insights::API::Common::Request.with_request(default_request) do |request|
+      tenant = Tenant.find_or_create_by(:external_tenant => request.tenant)
+      ActsAsTenant.with_tenant(tenant) { example.call }
+    end
+  end
+
   describe "#process" do
     context "when source_type_id matches the environment" do
-      let(:params) { {'id' => '200', 'source_type_id' => 10, 'tenant' => tenant.external_tenant, 'source_uid' => SecureRandom.uuid} }
+      let(:params) { {'id' => '200', 'source_type_id' => 10, 'source_uid' => SecureRandom.uuid} }
 
       it "should create a Source" do
         subject.process
@@ -22,7 +27,7 @@ describe SourceCreateTaskService do
     end
 
     context "when source_type_id doee not matches the environment" do
-      let(:params) { {'id' => '200', 'external_tenant' => tenant.external_tenant, 'source_uid' => SecureRandom.uuid} }
+      let(:params) { {'id' => '200', 'source_uid' => SecureRandom.uuid} }
 
       it "should do nothing" do
         subject.process
