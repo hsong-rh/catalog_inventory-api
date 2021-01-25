@@ -36,11 +36,11 @@ module Events
 
       # Kafka message from Ingress has no headers. We need to prepare the headers from its payload.
       if insights_headers.empty?
-        if event.payload.class == Hash && event.payload.has_key?("params") 
+        if event.payload.class == Hash && event.payload.has_key?("params") && event.payload["params"].has_key?("external_tenant")
           # check availability from source doesn't have headers
           insights_headers['x-rh-insights-request-id'] = "unknown"
-          insights_headers['x-rh-identity'] = identity_from_external_tenant(event.payload["params"]["external_tenant"])
-        else 
+          insights_headers['x-rh-identity'] = Headers::Service.x_rh_identity_tenant_user(event.payload["params"]["external_tenant"])
+        else
           # ingress doesn't have any header
           header_hash = json.parse(event.payload)
           insights_headers['x-rh-insights-request-id'] = header_hash["request_id"]
@@ -73,51 +73,6 @@ module Events
 
     def default_messaging_options
       {:protocol => :Kafka, :encoding => 'json'}
-    end
-
-    def identity_from_external_tenant(account_number)
-      hash = {
-        "entitlements" => {
-          "ansible"          => {
-            "is_entitled" => true
-          },
-          "hybrid_cloud"     => {
-            "is_entitled" => true
-          },
-          "insights"         => {
-            "is_entitled" => true
-          },
-          "migrations"       => {
-            "is_entitled" => true
-          },
-          "openshift"        => {
-            "is_entitled" => true
-          },
-          "smart_management" => {
-            "is_entitled" => true
-          }
-        },
-        "identity" => {
-          "account_number" => account_number,
-          "type"           => "User",
-          "auth_type"      => "basic-auth",
-          "user"           =>  {
-            "username"     => "jdoe",
-            "email"        => "jdoe@acme.com",
-            "first_name"   => "John",
-            "last_name"    => "Doe",
-            "is_active"    => true,
-            "is_org_admin" => false,
-            "is_internal"  => false,
-            "locale"       => "en_US"
-          },
-          "internal"       => {
-            "org_id"    => "3340851",
-            "auth_time" => 6300
-          }
-        }
-      }
-      Base64.strict_encode64(hash.to_json)
     end
   end
 end
