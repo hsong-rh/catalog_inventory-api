@@ -54,8 +54,8 @@ class ClowderConfig
       options["UPLOAD_URL"] = ENV["UPLOAD_URL"] || "https://ci.cloud.redhat.com/api/ingress/v1/upload"
       options["QUEUE_HOST"] = ENV["QUEUE_HOST"] || "localhost"
       options["QUEUE_PORT"] = ENV["QUEUE_PORT"] || "9092"
-      options["CATALOG_INVENTORY_URL"] = "http://localhost:5000"
-      options["CATALOG_INVENTORY_INTERNAL_URL"] = "http://localhost:5000"
+      options["CATALOG_INVENTORY_URL"] = ENV["CATALOG_INVENTORY_URL"] || "Not Specified"
+      options["CATALOG_INVENTORY_INTERNAL_URL"] = ENV["CATALOG_INVENTORY_INTERNAL_URL"] || "Not specified"
     end
   end
 end
