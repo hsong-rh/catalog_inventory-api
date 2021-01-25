@@ -42,7 +42,7 @@ module Events
           insights_headers['x-rh-identity'] = Headers::Service.x_rh_identity_tenant_user(event.payload["params"]["external_tenant"])
         else
           # ingress doesn't have any header
-          header_hash = json.parse(event.payload)
+          header_hash = JSON.parse(event.payload)
           insights_headers['x-rh-insights-request-id'] = header_hash["request_id"]
           insights_headers['x-rh-identity'] = header_hash["b64_identity"]
         end
