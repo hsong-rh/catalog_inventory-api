@@ -9,8 +9,12 @@ describe CheckAvailabilityTaskService do
   end
 
   describe "#process" do
-    context "when source is enabled" do
-      let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => true) }
+    before do
+      allow(ClowderConfig).to receive(:instance).and_return({"SOURCES_URL" => "http://www.sources_url.com"})
+    end
+
+    context "when source is ready for availability check" do
+      let(:source) { FactoryBot.create(:source, :tenant => tenant, :mqtt_client_id => 'client_id', :enabled => true) }
 
       it "returns CheckAvailabilityTask type of task" do
         task = subject.process.task
@@ -24,11 +28,19 @@ describe CheckAvailabilityTaskService do
       end
     end
 
+    context "when source is only enabled" do
+      let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => true) }
+
+      it "raises an error" do
+        expect{ subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
+      end
+    end
+
     context "when source is disabled" do
       let(:source) { FactoryBot.create(:source, :tenant => tenant, :enabled => false) }
 
-      it "returns nil task" do
-        expect{ subject.process.task }.to raise_error(StandardError, /is disabled/)
+      it "raises an error" do
+        expect{ subject.process.task }.to raise_error(StandardError, /not ready for availability_check!/)
       end
     end
   end

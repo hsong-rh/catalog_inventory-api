@@ -9,7 +9,7 @@ class TaskService
   private
 
   def validate_options
-    raise("Options must have source_id") unless @options[:source_id].present?
+    raise("Options must have source_id") if @options[:source_id].blank?
   end
 
   def task_input
@@ -30,6 +30,10 @@ class TaskService
 
   def source_enabled?
     Source.find_by(:id => source_id)&.enabled
+  end
+
+  def source_refresh?
+    Source.find_by(:id => source_id)&.mqtt_client_id.nil? || !source_enabled?
   end
 
   def fetch_related
