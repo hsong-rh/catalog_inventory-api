@@ -2,7 +2,7 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
-    raise "Source #{source_id} is disabled" unless source_enabled?
+    refresh if source_refresh?
 
     @task = CheckAvailabilityTask.create!(task_options)
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
@@ -13,6 +13,24 @@ class CheckAvailabilityTaskService < TaskService
   end
 
   private
+
+  def refresh
+    endpoints = Sources::Service.call do |api_instance|
+      api_instance.list_endpoints(:filter => {:source_id => source_id})
+    end
+    endpoint = endpoints.try(:data).try(:first)
+
+    applications = Sources::Service.call do |api_instance|
+      api_instance.list_applications(:filter => {
+                                       :source_id           => source_id,
+                                       :application_type_id => ClowderConfig.instance["APPLICATION_TYPE_ID"]
+                                     })
+    end
+
+    raise("Source #{source_id} is not ready for availability_check!") if endpoint.blank? || applications.data.empty?
+
+    Source.update(source_id, :mqtt_client_id => endpoint.receptor_node, :enabled => true)
+  end
 
   def response_format
     "json"

@@ -24,7 +24,12 @@ module Sources
     end
 
     private_class_method def self.pass_thru_headers
-      headers = {"x-rh-identity" => Headers::Service.x_rh_identity_dummy_admin}
+      headers = if Insights::API::Common::Request.current
+                  Insights::API::Common::Request.current_forwardable
+                else
+                  {"x-rh-identity" => Headers::Service.x_rh_identity_dummy_admin}
+                end
+
       sources_api.api_client.default_headers.merge!(headers)
     end
   end
