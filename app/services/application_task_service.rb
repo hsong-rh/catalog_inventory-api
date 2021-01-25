@@ -5,7 +5,7 @@ class ApplicationTaskService
   end
 
   def process
-    return if ClowderConfig.instance["APPLICATION_TYPE_ID"].blank? || ClowderConfig.instance["APPLICATION_TYPE_ID"] != @options[:application_type_id].to_s
+    return if ClowderConfig.instance["APPLICATION_TYPE_ID"] != @options[:application_type_id]
 
     Source.update(@options[:source_id], :enabled => @options[:enabled])
   end
