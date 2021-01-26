@@ -57,6 +57,7 @@ module Events
         tenant = Tenant.first_or_create(:external_tenant => req.tenant)
         if tenant
           Rails.logger.info("Tenant in KafkaListener: #{tenant.inspect}")
+          Rails.logger.info("Headers in KafkaListener: #{insights_headers}")
 
           ActsAsTenant.with_tenant(tenant) do
             ActiveRecord::Base.connection_pool.with_connection do
