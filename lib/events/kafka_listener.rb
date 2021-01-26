@@ -56,6 +56,8 @@ module Events
       Insights::API::Common::Request.with_request(:headers => insights_headers, :original_url => nil) do |req|
         tenant = Tenant.first_or_create(:external_tenant => req.tenant)
         if tenant
+          Rails.logger.info("Tenant in KafkaListener: #{tenant.inspect}")
+
           ActsAsTenant.with_tenant(tenant) do
             ActiveRecord::Base.connection_pool.with_connection do
               process_event(event)

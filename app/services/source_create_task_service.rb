@@ -3,6 +3,8 @@ class SourceCreateTaskService < TaskService
     return if ClowderConfig.instance["SOURCE_TYPE_ID"] != @options[:source_type_id]
 
     Rails.logger.info("Creating Source")
+    Rails.logger.info("Tenant: #{tenant.inspect}")
+
     Source.create!(source_options)
     Rails.logger.info("Creating Source Finished")
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
