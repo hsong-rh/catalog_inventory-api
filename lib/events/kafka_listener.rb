@@ -54,7 +54,7 @@ module Events
       end
 
       Insights::API::Common::Request.with_request(:headers => insights_headers, :original_url => nil) do |req|
-        tenant = Tenant.first_or_create(:external_tenant => req.tenant)
+        tenant = Tenant.find_or_create_by(:external_tenant => req.tenant)
         if tenant
           Rails.logger.info("Tenant in KafkaListener: #{tenant.inspect}")
           Rails.logger.info("Headers in KafkaListener: #{insights_headers}")
