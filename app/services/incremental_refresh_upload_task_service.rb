@@ -93,7 +93,7 @@ class IncrementalRefreshUploadTaskService < TaskService
   def credential_types_jobs
     [].tap do |credential_types_jobs|
       credential_types_jobs << CatalogInventory::Job.new.tap do |job|
-        job.href_slug = "#{TOWER_API_VERSION}/credential_types??order=id&modified__gt=#{@last_successful_refresh_at}"
+        job.href_slug = "#{TOWER_API_VERSION}/credential_types?order=id&modified__gt=#{@last_successful_refresh_at}"
         job.method = "GET"
         job.fetch_all_pages = true
         job.apply_filter = "results[].{id:id, type:type, created:created, name:name, modified:modified, description:description, kind:kind, namespace:namespace}"
