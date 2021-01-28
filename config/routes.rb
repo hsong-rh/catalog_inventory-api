@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       end
 
       resources :service_offerings, :only => [:index, :show], :concerns => [:taggable] do
-        post "applied_inventories", :to => "service_offerings#applied_inventories"
+        post "applied_inventories_tags", :to => "service_offerings#applied_inventories_tags"
         post "order", :to => "service_offerings#order"
         resources :service_credentials,    :only => [:index]
         resources :service_instances,      :only => [:index]

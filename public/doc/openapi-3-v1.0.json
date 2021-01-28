@@ -1009,14 +1009,14 @@
         }
       }
     },
-    "/service_offerings/{id}/applied_inventories": {
+    "/service_offerings/{id}/applied_inventories_tags": {
       "post": {
         "tags": [
           "ServiceOffering"
         ],
-        "summary": "Invokes computing of ServiceInventories for given ServiceOffering",
-        "operationId": "appliedInventoriesForServiceOffering",
-        "description": "Returns a Task id",
+        "summary": "Invokes computing of ServiceInventories tags for given ServiceOffering",
+        "operationId": "appliedInventoriesTagsForServiceOffering",
+        "description": "Returns a collection of inventories tags",
         "parameters": [
           {
             "$ref": "#/components/parameters/ID"
@@ -1035,16 +1035,11 @@
         },
         "responses": {
           "200": {
-            "description": "Returns a task ID for the computing result",
+            "description": "Returns a collection of inventories tags for the computing result",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "task_id": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/TagsCollection"
                 }
               }
             }
