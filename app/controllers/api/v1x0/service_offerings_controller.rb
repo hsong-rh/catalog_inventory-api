@@ -35,6 +35,8 @@ module Api
 
         logger.info("ServiceOffering##{operation_type}: Task(id: #{task.id}), ServiceOffering(id: #{service_offering.id}, source_ref: #{service_offering.source_ref}): Publishing event(ServiceOffering.#{operation_type}) to kafka")
 
+        KafkaEventService.raise_event("platform.catalog-inventory.operations-ansible-tower", "ServiceOffering##{operation_type}", payload)
+
         logger.info("ServiceOffering##{operation_type}: ServiceOffering(id: #{service_offering.id}, source_ref: #{service_offering.source_ref}), Task(id: #{task.id}): event(ServiceOffering.#{operation_type}) published to kafka.")
 
         render :json => {:task_id => task.id}

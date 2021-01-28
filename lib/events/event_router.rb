@@ -17,6 +17,8 @@ module Events
         task.dispatch
       when "Endpoint.create"
         EndpointCreateTaskService.new(payload).process
+      when "ServiceOffering.applied_inventories"
+        CollectInventoriesService.new(payload["params"]).process
       else
         Rails.logger.warn("Event type: #{event_type} is not supported.")
       end

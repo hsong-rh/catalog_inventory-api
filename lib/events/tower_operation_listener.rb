@@ -1,6 +1,6 @@
 module Events
   class TowerOperationListener < KafkaListener
-    SERVICE_NAME = "platform.topological-inventory.operations-ansible-tower".freeze
+    SERVICE_NAME = "platform.catalog-inventory.operations-ansible-tower".freeze
     GROUP_REF = "catalog_inventory-api".freeze
 
     def initialize(messaging_client_option)
