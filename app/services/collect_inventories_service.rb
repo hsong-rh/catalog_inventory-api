@@ -1,25 +1,18 @@
 class CollectInventoriesService
-  attr_reader :inventory_ids
+  attr_reader :inventory_tags
 
-  def initialize(options)
-    @options = options.deep_symbolize_keys
-    @service_offering_id = @options[:service_offering_id]
-    @task_id = @options[:task_id]
-    @inventory_ids = []
+  def initialize(service_offering_id)
+    @service_offering_id = service_offering_id
+    @inventory_tags = []
   end
 
   def process
-    Task.update(@task_id, :state => "running", :status => "ok")
-
     visited = []
-    collect_inventory(@service_offering_id, visited, @inventory_ids)
-
-    Task.update(@task_id, :state => "completed", :status => "ok", :output => {:applied_inventories => @inventory_ids})
+    inventory_ids = []
+    collect_inventory(@service_offering_id, visited, inventory_ids)
+    @inventory_tags = inventory_ids.uniq.each.collect { |id| ServiceInventory.find(id).tags }.flatten
 
     self
-  rescue => e
-    Rails.logger.error("Task #{@task_id} AppliedInventories error: #{e}\n#{e.backtrace.join("\n")}")
-    Task.update(@task_id, :state => "completed", :status => "error", :output => {:error => e.to_s})
   end
 
   private
