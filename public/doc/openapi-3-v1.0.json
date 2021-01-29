@@ -1016,7 +1016,7 @@
         ],
         "summary": "Invokes computing of ServiceInventories tags for given ServiceOffering",
         "operationId": "appliedInventoriesTagsForServiceOffering",
-        "description": "Returns a collection of inventories tags",
+        "description": "Returns an array of inventories tags",
         "parameters": [
           {
             "$ref": "#/components/parameters/ID"
@@ -1035,11 +1035,14 @@
         },
         "responses": {
           "200": {
-            "description": "Returns a collection of inventories tags for the computing result",
+            "description": "Returns an array of inventories tags for the computing result",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TagsCollection"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
                 }
               }
             }
