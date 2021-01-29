@@ -6,13 +6,16 @@ module Api
 
       def update
         model.update(params.require(:id), params_for_update)
-
-        if model.find(params.require(:id)).type == "LaunchJobTask"
+        obj = model.find(params.require(:id))
+        if obj.type == "LaunchJobTask"
+          payload = params_for_update.to_h
+          payload["id"] = obj.id
+          payload["output"] = obj.output unless payload.has_key?("output")
           CatalogInventory::Api::Messaging.client.publish_topic(
             # TODO:
             :service => "platform.catalog-inventory.task-output-stream",
             :event   => "Task.update",
-            :payload => params_for_update.to_h.merge("id" => params.require(:id)),
+            :payload => payload,
             :headers => Insights::API::Common::Request.current_forwardable
           )
         end
