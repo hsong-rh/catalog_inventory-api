@@ -10,7 +10,7 @@ describe PostLaunchJobTaskService do
   end
 
   describe "#process" do
-    it "should create a ServiceInstance" do
+    xit "should create a ServiceInstance" do
       expect(CatalogInventory::Api::Messaging.client).to receive(:publish_topic)
 
       subject.process
