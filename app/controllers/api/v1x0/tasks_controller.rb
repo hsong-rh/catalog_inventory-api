@@ -7,7 +7,7 @@ module Api
       def update
         model.update(params.require(:id), params_for_update)
 
-        if ENV['NO_KAFKA'].blank?
+        if model.find(params.require(:id)).type == "LaunchJobTask"
           CatalogInventory::Api::Messaging.client.publish_topic(
             # TODO:
             :service => "platform.catalog-inventory.task-output-stream",
