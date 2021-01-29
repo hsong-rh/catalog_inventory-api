@@ -3,6 +3,7 @@ class LaunchJobTask < MqttClientTask
 
   def post_launch_job_task
     PostLaunchJobTaskService.new(service_options).process
+    KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", self.to_json)
   end
 
   def service_options
@@ -32,6 +33,7 @@ class LaunchJobTask < MqttClientTask
   end
 
   def service_plan_id
-    service_offering.service_plans.first.id
+    # Not all service offerings have service plans
+    service_offering.service_plans.first.try(:id)
   end
 end

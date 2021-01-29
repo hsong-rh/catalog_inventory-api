@@ -11,7 +11,8 @@ describe PostLaunchJobTaskService do
 
   describe "#process" do
     it "should create a ServiceInstance" do
-      expect(CatalogInventory::Api::Messaging.client).to receive(:publish_topic)
+      # TODO: This should be enabled if the code is in the service
+      # expect(CatalogInventory::Api::Messaging.client).to receive(:publish_topic)
 
       subject.process
 
