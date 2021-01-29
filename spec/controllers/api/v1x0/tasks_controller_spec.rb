@@ -8,6 +8,10 @@ RSpec.describe Api::V1x0::TasksController, :type => :request do
 
   let(:headers) { {"CONTENT_TYPE" => "application/json", "x-rh-identity" => identity} }
   let(:client)  { instance_double("ManageIQ::Messaging::Client") }
+  let(:source) { Source.create!(:tenant => tenant) }
+  let(:source_ref) { "10" }
+  let!(:service_offering) { ServiceOffering.create!(:source => source, :tenant => tenant, "source_ref" => source_ref) }
+  let(:output) { { "message" => "context1", "unified_job_template" => source_ref, "id" => "tower_job_id"} }
 
   before do
     allow(CatalogInventory::Api::Messaging).to receive(:client).and_return(client)
@@ -15,19 +19,19 @@ RSpec.describe Api::V1x0::TasksController, :type => :request do
   end
 
   it "patch /tasks/:id updates a Task" do
-    task = Task.create!(:state => "running", :status => "ok", :input => { :message => "context1" }, :tenant => tenant)
+    task = LaunchJobTask.create!(:state => "running", :status => "ok", :source => source, :tenant => tenant)
     expect(client).to receive(:publish_topic).with(
       :service => "platform.catalog-inventory.task-output-stream",
       :event   => "Task.update",
-      :payload => {"state" => "completed", "status" => "ok", "input" => { :message => "context2" }, "id" => task.id.to_s},
+      :payload => {"state" => "completed", "status" => "ok", "output" => output, "id" => task.id.to_s},
       :headers => {"x-rh-identity" => identity}
     )
 
-    patch(api_v1x0_task_url(task.id), :params => {:state => "completed", :status => "ok", :input => { :message => "context2" }}.to_json, :headers => headers)
+    patch(api_v1x0_task_url(task.id), :params => {:state => "completed", :status => "ok", :output => output}.to_json, :headers => headers)
 
     expect(task.reload.state).to eq("completed")
     expect(task.reload.status).to eq("ok")
-    expect(task.input).to eq("message" => "context2")
+    expect(task.output).to eq(output)
 
     expect(response.status).to eq(204)
     expect(response.parsed_body).to be_empty
