@@ -1,5 +1,5 @@
 class LaunchJobTask < MqttClientTask
-  after_update :post_launch_job_task, :if => proc { state == 'completed' }
+  after_update :post_launch_job_task, :if => proc { state == 'completed' && status == 'ok' }
 
   def post_launch_job_task
     PostLaunchJobTaskService.new(service_options).process
