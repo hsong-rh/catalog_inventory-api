@@ -45,13 +45,21 @@ class LaunchJobTaskService < TaskService
     jobs = []
 
     launch = CatalogInventory::Job.new
-    launch.href_slug = "#{TOWER_API_VERSION}/job_templates/#{@service_offering.source_ref}/launch/"
+    launch.href_slug = href_slug
     launch.method = "launch"
     launch.params = payload_params
     launch.apply_filter = {"id":"id", "status":"status", "started":"started", "url":"url", "type":"type","finished":"finished", "modified":"modified", "description":"description", "extra_vars":"extra_vars", "artifacts":"artifacts", "name":"name","created":"created", "unified_job_template":"unified_job_template"}
     jobs << launch
 
     jobs
+  end
+
+  def href_slug
+    if @service_offering.extra["type"] == "workflow_job_template"
+      "#{TOWER_API_VERSION}/workflow_job_templates/#{@service_offering.source_ref}/launch/"
+    else
+      "#{TOWER_API_VERSION}/job_templates/#{@service_offering.source_ref}/launch/"
+    end
   end
 
   def payload_params
