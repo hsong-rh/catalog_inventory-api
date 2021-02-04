@@ -11,7 +11,7 @@ class ClowderConfig
         options["webPorts"] = config.webPort
         options["metricsPort"] = config.metricsPort
         options["metricsPath"] = config.metricsPath
-        options["kafakBrokers"] = [].tap do |brokers|
+        options["kafkaBrokers"] = [].tap do |brokers|
           config.kafka.brokers.each do |broker|
             brokers << "#{broker.hostname}:#{broker.port}"
           end
@@ -33,7 +33,7 @@ class ClowderConfig
       else
         options["webPorts"] = 3000
         options["metricsPort"] = 8080
-        options["kafakBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
+        options["kafkaBrokers"] = ["#{ENV['QUEUE_HOST']}:#{ENV['QUEUE_PORT']}"]
         options["logGroup"] = "platform-dev"
         options["awsRegion"] = "us-east-1"
         options["awsAccessKeyId"] = ENV['CW_AWS_ACCESS_KEY_ID']
@@ -52,17 +52,23 @@ class ClowderConfig
       # TODO: update with valid url later
       options["MQTT_CLIENT_URL"] = ENV["MQTT_CLIENT_URL"] || "mqtt://localhost:1883"
       options["UPLOAD_URL"] = ENV["UPLOAD_URL"] || "https://ci.cloud.redhat.com/api/ingress/v1/upload"
-      options["QUEUE_HOST"] = ENV["QUEUE_HOST"] || "localhost"
-      options["QUEUE_PORT"] = ENV["QUEUE_PORT"] || "9092"
       options["CATALOG_INVENTORY_URL"] = ENV["CATALOG_INVENTORY_URL"] || "Not Specified"
       options["CATALOG_INVENTORY_INTERNAL_URL"] = ENV["CATALOG_INVENTORY_INTERNAL_URL"] || "Not specified"
     end
   end
+
+  def self.queue_host
+    instance["kafkaBrokers"].first.split(":").first || "localhost"
+  end
+
+  def self.queue_port
+    instance["kafkaBrokers"].first.split(":").last || "9092"
+  end
 end
 
 # ManageIQ Message Client depends on these variables
-ENV["QUEUE_HOST"] = ClowderConfig.instance["QUEUE_HOST"]
-ENV["QUEUE_PORT"] = ClowderConfig.instance["QUEUE_PORT"]
+ENV["QUEUE_HOST"] = ClowderConfig.queue_host
+ENV["QUEUE_PORT"] = ClowderConfig.queue_port
 
 # ManageIQ Logger depends on these variables
 ENV['CW_AWS_ACCESS_KEY_ID'] = ClowderConfig.instance["awsAccessKeyId"]
