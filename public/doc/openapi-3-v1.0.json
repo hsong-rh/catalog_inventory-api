@@ -3286,6 +3286,12 @@
             "readOnly": true,
             "type": "object"
           },
+          "name": {
+            "example": "The Source Name",
+            "title": "Name",
+            "readOnly": true,
+            "type": "string"
+          },
           "mqtt_client_id": {
             "example": "The GUID of MQTT client being used",
             "title": "MqttClientId",
