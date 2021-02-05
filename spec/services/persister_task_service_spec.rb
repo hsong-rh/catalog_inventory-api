@@ -1,8 +1,8 @@
-describe PostLaunchJobTaskService do
+describe PersisterTaskService do
   include ::Spec::Support::TenantIdentity
 
-  let(:source) { FactoryBot.create(:source, :tenant => tenant) }
-  let(:params) { {'source_id' => source.id, 'tenant_id' => tenant.id, 'source_ref' => SecureRandom.uuid} }
+  let(:params) { JSON({'url' => 'http://example.com', 'size' => 1000, 'category' => task.id}) }
+  let(:task) { FactoryBot.create(:task, :source => source, :tenant => tenant) }
   let(:subject) { described_class.new(params) }
 
   around do |example|
@@ -10,13 +10,28 @@ describe PostLaunchJobTaskService do
   end
 
   describe "#process" do
-    xit "should create a ServiceInstance" do
-      expect(CatalogInventory::Api::Messaging.client).to receive(:publish_topic)
+    context "when source is enabled" do
+      let(:source) { FactoryBot.create(:source, :enabled => true, :tenant => tenant) }
 
-      subject.process
+      it "should create a FullRefreshPersisterTask" do
+        expect(CatalogInventory::Api::Messaging.client).to receive(:publish_topic)
 
-      expect(ServiceInstance.count).to eq(1)
-      expect(ServiceInstance.first.source_ref).to eq(params["source_ref"])
+        subject.process
+
+        expect(Task.where(:type => "FullRefreshPersisterTask").count).to eq(1)
+      end
+    end
+
+    context "when source is enabled" do
+      let(:source) { FactoryBot.create(:source, :enabled => false, :tenant => tenant) }
+
+      it "should not create a FullRefreshPersisterTask" do
+        expect(CatalogInventory::Api::Messaging.client).not_to receive(:publish_topic)
+
+        subject.process
+
+        expect(Task.where(:type => "FullRefreshPersisterTask").count).to eq(0)
+      end
     end
   end
 end
