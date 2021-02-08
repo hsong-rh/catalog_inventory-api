@@ -8,6 +8,7 @@ class IncrementalRefreshUploadTaskService < TaskService
 
   def process
     @task = IncrementalRefreshUploadTask.create!(task_options)
+    Source.update(source_id, :refresh_started_at => Time.current)
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
     self
   end
