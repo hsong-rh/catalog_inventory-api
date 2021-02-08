@@ -14,5 +14,6 @@ class PostPersisterTaskService < TaskService
   def update_source
     source = Source.find(@options[:task].source_id)
     source.update!(:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"]) if @options[:task].status == "ok"
+    source.update!(:refresh_finished_at => Time.current)
   end
 end
