@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_19_183553) do
+ActiveRecord::Schema.define(version: 2021_02_06_152407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(version: 2021_01_19_183553) do
     t.string "value", default: "", null: false
     t.datetime "last_seen_at"
     t.index ["last_seen_at"], name: "index_tags_on_last_seen_at"
-    t.index ["tenant_id", "namespace", "name"], name: "index_tags_on_tenant_id_and_namespace_and_name", unique: true
+    t.index ["tenant_id", "namespace", "name", "value"], name: "index_tags_on_tenant_id_and_namespace_and_name_and_value", unique: true
   end
 
   create_table "tasks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
