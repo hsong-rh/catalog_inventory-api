@@ -1666,6 +1666,32 @@
         }
       }
     },
+    "/sources/{id}/refresh": {
+      "patch": {
+        "tags": [
+          "Source"
+        ],
+        "summary": " Refresh an existing Source",
+        "operationId": "refreshSource",
+        "description": "Refresh a source object",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated, no content"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        }
+      }
+    },
     "/sources/{id}/service_instance_nodes": {
       "get": {
         "tags": [

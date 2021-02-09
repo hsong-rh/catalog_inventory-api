@@ -4,12 +4,18 @@ class PersisterTaskService
 
     validate_options
     @upload_task = Task.find(@options[:category])
+    @source = Source.find_by(:id => @upload_task.source_id)
   end
 
   def process
     return self unless source_enabled?
 
     @task = FullRefreshPersisterTask.create!(opts)
+    @upload_task.update!(:child_task_id => @task.id)
+    @source.update!(:refresh_state => "Resyncing")
+
+    Rails.logger.info("Upload Task #{@upload_task.id} now has persister child task #{@task.id}")
+
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?
     KafkaEventService.raise_event("platform.catalog.persister", "persister", payload)
 
@@ -25,7 +31,7 @@ class PersisterTaskService
   end
 
   def source_enabled?
-    Source.find_by(:id => @upload_task.source_id)&.enabled
+    @source&.enabled
   end
 
   def opts
