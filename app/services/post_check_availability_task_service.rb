@@ -10,7 +10,7 @@ class PostCheckAvailabilityTaskService < TaskService
   def process
     update_source
     KafkaEventService.raise_event("platform.sources.status", "availability_status", kafka_payload.to_json)
-    create_refresh_upload_task if @task.status == "ok"
+    @task.status == "ok" ? create_refresh_upload_task : Rails.logger.error("Task #{@task.id} failed")
     self
   end
 
