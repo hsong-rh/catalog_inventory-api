@@ -1686,6 +1686,9 @@
           "400": {
             "description": "Bad request"
           },
+          "404": {
+            "description": "Not found"
+          },
           "429": {
             "description": "Too many requests"
           }
@@ -3346,6 +3349,16 @@
           },
           "refresh_finished_at": {
             "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "last_refresh_message": {
+            "title": "LastRefreshMessage",
+            "readOnly": true,
+            "type": "string"
+          },
+          "refresh_task_id": {
+            "format": "uuid",
             "readOnly": true,
             "type": "string"
           },

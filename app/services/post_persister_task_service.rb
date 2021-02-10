@@ -21,11 +21,13 @@ class PostPersisterTaskService < TaskService
   def ok_options
     {:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"],
      :refresh_finished_at        => Time.current,
+     :last_refresh_message       => @options[:task][:output],
      :refresh_state              => "Done"}
   end
 
   def error_options
-    {:refresh_finished_at => Time.current,
-     :refresh_state       => "Error"}
+    {:refresh_finished_at  => Time.current,
+     :last_refresh_message => @options[:task][:output][:errors].join("; "),
+     :refresh_state        => "Error"}
   end
 end

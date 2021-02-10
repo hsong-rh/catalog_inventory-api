@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_200543) do
     t.datetime "last_available_at"
     t.boolean "enabled", default: false
     t.string "refresh_task_id"
+    t.string "last_refresh_message"
     t.index ["tenant_id", "uid"], name: "index_sources_on_tenant_id_and_uid", unique: true
   end
 
