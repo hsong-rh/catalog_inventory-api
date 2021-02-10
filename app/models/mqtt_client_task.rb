@@ -1,12 +1,10 @@
 class MqttClientTask < Task
   def dispatch
-    host = ClowderConfig.instance["CATALOG_INVENTORY_URL"]
+    catalog_inventory_url = ClowderConfig.instance["CATALOG_INVENTORY_EXTERNAL_URL"]
     mqtt_client_url = ClowderConfig.instance["MQTT_CLIENT_URL"]
     app_version = ClowderConfig.instance["CURRENT_API_VERSION"] || "v1.0"
-    path_prefix = ClowderConfig.instance["PATH_PREFIX"]
-    app_name = ClowderConfig.instance["APP_NAME"]
 
-    task_url_prefix = File.join(host, path_prefix, app_name, app_version, "tasks").gsub(/^\/+|\/+$/, "")
+    task_url_prefix = File.join(catalog_inventory_url, app_version, "tasks").gsub(/^\/+|\/+$/, "")
     opts = {:task_id          => id,
             :task_url         => task_url_prefix,
             :mqtt_client_guid => source.mqtt_client_id,
