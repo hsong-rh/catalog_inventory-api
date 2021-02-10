@@ -13,8 +13,19 @@ class PostPersisterTaskService < TaskService
 
   def update_source
     source = Source.find(@options[:task].source_id)
-    source.update!(:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"]) if @options[:task].status == "ok"
-    source.update!(:refresh_finished_at => Time.current, :refresh_state => "Done")
+    @options[:task].status == "ok" ? source.update!(ok_options) : source.update!(error_options)
+
     Rails.logger.info("Source #{source.id}: refresh finished at #{source.refresh_finished_at}, state: #{source.refresh_state}")
+  end
+
+  def ok_options
+    {:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"],
+     :refresh_finished_at        => Time.current,
+     :refresh_state              => "Done"}
+  end
+
+  def error_options
+    {:refresh_finished_at => Time.current,
+     :refresh_state       => "Error"}
   end
 end
