@@ -79,6 +79,6 @@ class MQTTControllerService
   end
 
   def payload
-    {"URL" => "#{@task_url}/#{@task_id}"}.to_json
+    {"URL" => "#{@task_url}/#{@task_id}"}
   end
 end
