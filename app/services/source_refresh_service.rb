@@ -16,8 +16,8 @@ class SourceRefreshService
 
       if task.state == "completed"
         if task.child_task_id.nil?
-          Rails.logger.error("PersisterTask is in creating, please try again later")
-          raise CatalogInventory::Exceptions::RefreshAlreadyRunningException, "PersisterTask is in creating"
+          Rails.logger.error("Waiting for payload, please try again later")
+          raise CatalogInventory::Exceptions::RefreshAlreadyRunningException, "Waiting for payload"
         end
 
         persister_task = Task.find(task.child_task_id)
