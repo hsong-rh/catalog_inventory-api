@@ -6,7 +6,7 @@ require 'json'
 class MQTTControllerService
   API_VERSION = "v1".freeze
   DIRECTIVE = "catalog".freeze
-
+  VALID_STATUS_CODES = [200, 201, 202].freeze
   def initialize(options)
     @options = options.deep_symbolize_keys
 
@@ -48,14 +48,15 @@ class MQTTControllerService
     response = http.request(request)
     Rails.logger.info("Sent message for #{@mqtt_client_guid} #{response.code} #{response.message}")
     # TODO: We should store the message ID coming back in our task table for tracking
-
-    Rails.logger.info("Cloud Controller response #{@mqtt_client_guid} #{response.body}")
+    task_failed(response.body) unless VALID_STATUS_CODES.include?(response.code)
   rescue => error
-    @task.update_attributes(:state => "completed", :status => "error", :output => {'errors' => ["#{error}"]} )
-    Rails.logger.error("Error sending message to cloud controller #{@mqtt_client_guid} #{error}")
+    task_failed(error)
   end
 
-
+  def task_failed(error)
+    Rails.logger.error("Error sending message to cloud controller node id: #{@mqtt_client_guid} #{error}")
+    @task.update_attributes(:state => "completed", :status => "error", :output => {'errors' => ["#{error}"]} )
+  end
 
   def validate_options
     unless @options[:task_id].present? && @options[:task_url].present? && @options[:mqtt_client_url].present? && @options[:mqtt_client_guid].present?
