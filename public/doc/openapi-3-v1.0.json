@@ -3498,6 +3498,11 @@
             "title": "Message",
             "type": "string"
           },
+          "controller_message_id": {
+            "format": "uuid",
+            "readOnly": true,
+            "type": "string"
+          },
           "target_source_ref": {
             "type": "string"
           },

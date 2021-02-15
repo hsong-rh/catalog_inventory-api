@@ -47,8 +47,8 @@ class MQTTControllerService
     # Send the request
     response = http.request(request)
     Rails.logger.info("Sent message for #{@mqtt_client_guid} #{response.code} #{response.message}")
-    # TODO: We should store the message ID coming back in our task table for tracking
-    task_failed(response.body) unless VALID_STATUS_CODES.include?(response.code)
+
+    VALID_STATUS_CODES.include?(response.code) ? @task.update!(:controller_message_id => response.body['id']) : task_failed(response.body)
   rescue => error
     task_failed(error)
   end
