@@ -6,7 +6,7 @@ require 'json'
 class MQTTControllerService
   API_VERSION = "v1".freeze
   DIRECTIVE = "catalog".freeze
-  VALID_STATUS_CODES = [200, 201, 202].freeze
+  VALID_STATUS_CODES = %w[200 201 202].freeze
   def initialize(options)
     @options = options.deep_symbolize_keys
 
