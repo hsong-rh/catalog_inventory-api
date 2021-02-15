@@ -5,7 +5,8 @@ module Api
       include Mixins::ShowMixin
 
       def refresh
-        SourceRefreshService.new(params.require(:source_id)).process
+        source = Source.find(params.require(:source_id))
+        SourceRefreshService.new(source).process
 
         head :no_content
       rescue CatalogInventory::Exceptions::RecordLockedException, CatalogInventory::Exceptions::RefreshAlreadyRunningException => e

@@ -1,6 +1,6 @@
 class SourceRefreshService
-  def initialize(source_id)
-    @source = Source.find(source_id)
+  def initialize(source)
+    @source = source
   end
 
   def process
@@ -41,7 +41,7 @@ class SourceRefreshService
 
   def dispatch_refresh_upload_task
     @source.with_lock("FOR UPDATE NOWAIT") do
-      FullRefreshUploadTaskService.new(options).process.task.dispatch
+      create_refresh_upload_task
       @source.save!
     end
   rescue ActiveRecord::LockWaitTimeout
@@ -49,7 +49,15 @@ class SourceRefreshService
     raise CatalogInventory::Exceptions::RecordLockedException, "Source #{@source.id} is locked"
   end
 
-  def options
-    {:tenant_id => @source.tenant_id, :source_id => @source.id}
+  def create_refresh_upload_task
+    opts = {:tenant_id => @source.tenant_id, :source_id => @source.id}
+
+    upload_task = if @source.last_successful_refresh_at.present?
+                    IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at.iso8601)).process.task
+                  else
+                    FullRefreshUploadTaskService.new(opts).process.task
+                  end
+
+    upload_task.dispatch
   end
 end
