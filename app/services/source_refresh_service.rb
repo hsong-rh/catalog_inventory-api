@@ -14,6 +14,12 @@ class SourceRefreshService
         return self
       end
 
+      if task.timed_out?
+        task.update!(:state => "timedout", :status => "error")
+        dispatch_refresh_upload_task
+        return self
+      end
+
       if task.state == "completed"
         if task.child_task_id.nil?
           Rails.logger.error("Waiting for payload, please try again later")
