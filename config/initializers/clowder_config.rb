@@ -6,8 +6,8 @@ class ClowderConfig
 
   def self.instance
     @instance ||= {}.tap do |options|
-      config = AppCommonRuby::Config.load
-      if config.clowder_enabled?
+      if AppCommonRuby::Config.clowder_enabled?
+        config = AppCommonRuby::Config.load
         options["webPorts"] = config.webPort
         options["metricsPort"] = config.metricsPort
         options["metricsPath"] = config.metricsPath
