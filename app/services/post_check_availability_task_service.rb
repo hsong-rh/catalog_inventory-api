@@ -10,7 +10,7 @@ class PostCheckAvailabilityTaskService < TaskService
   def process
     update_source
     KafkaEventService.raise_event("platform.sources.status", "availability_status", kafka_payload.to_json)
-    @task.status == "ok" ? create_refresh_upload_task : Rails.logger.error("Task #{@task.id} failed")
+    @task.status == "ok" ? SourceRefreshService.new(@source).process : Rails.logger.error("Task #{@task.id} failed")
     self
   end
 
@@ -38,17 +38,5 @@ class PostCheckAvailabilityTaskService < TaskService
 
   def source_status
     @task.status == "ok" ? STATUS_AVAILABLE : STATUS_UNAVAILABLE
-  end
-
-  def create_refresh_upload_task
-    opts = {:tenant_id => @options[:tenant_id], :source_id => @source.id}
-
-    upload_task = if @source.last_successful_refresh_at.present?
-                    IncrementalRefreshUploadTaskService.new(opts.merge!(:last_successful_refresh_at => @source.last_successful_refresh_at.iso8601)).process.task
-                  else
-                    FullRefreshUploadTaskService.new(opts).process.task
-                  end
-
-    upload_task.dispatch
   end
 end
