@@ -48,7 +48,7 @@ class MQTTControllerService
     response = http.request(request)
     Rails.logger.info("Sent message for #{@mqtt_client_guid} #{response.code} #{response.message}")
 
-    VALID_STATUS_CODES.include?(response.code) ? @task.update!(:controller_message_id => response.body['id']) : task_failed(response.body)
+    VALID_STATUS_CODES.include?(response.code) ? @task.update!(:controller_message_id => JSON.parse(response.body)['id']) : task_failed(response.body)
   rescue => error
     task_failed(error)
   end
