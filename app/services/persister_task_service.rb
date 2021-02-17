@@ -12,7 +12,7 @@ class PersisterTaskService
 
     case @upload_task.status
     when "error"
-      errors = @upload_task.output["errors"].join("; ")
+      errors = @upload_task.output["errors"].join("\; ")
 
       @source.update!(:refresh_state        => "Error",
                       :last_refresh_message => errors,
