@@ -3322,8 +3322,8 @@
             "type": "string"
           },
           "mqtt_client_id": {
-            "example": "The GUID of MQTT client being used",
-            "title": "MqttClientId",
+            "example": "The GUID of the RedHat connect client being used",
+            "title": "RedHatConnectClientId",
             "readOnly": true,
             "type": "string"
           },
