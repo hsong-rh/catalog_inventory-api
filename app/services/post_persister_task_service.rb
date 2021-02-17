@@ -20,6 +20,8 @@ class PostPersisterTaskService < TaskService
 
   def ok_options
     {:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"],
+     :previous_sha               => @options[:task][:output]["sha256"],
+     :previous_size              => @options[:task][:output]["tar_size"],
      :refresh_finished_at        => Time.current,
      :last_refresh_message       => refresh_stats_message,
      :refresh_state              => "Done"}
