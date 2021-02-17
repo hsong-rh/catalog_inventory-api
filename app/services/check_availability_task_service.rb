@@ -2,7 +2,7 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
-    refresh if source_refresh?
+    refresh unless @source.ready_for_check?
 
     @task = CheckAvailabilityTask.create!(task_options)
     ActiveRecord::Base.connection().commit_db_transaction unless Rails.env.test?

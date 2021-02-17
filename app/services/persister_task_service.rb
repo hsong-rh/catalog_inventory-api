@@ -4,11 +4,11 @@ class PersisterTaskService
 
     validate_options
     @upload_task = Task.find(@options[:category])
-    @source = Source.find_by(:id => @upload_task.source_id)
+    @source = Source.find(@upload_task.source_id)
   end
 
   def process
-    return self unless source_enabled?
+    return self unless @source.enabled
 
     if @upload_task.status == "error"
       errors = @upload_task.output["errors"].join("; ")
@@ -38,10 +38,6 @@ class PersisterTaskService
     unless @options[:category].present? && @options[:url].present? && @options[:size].present?
       raise("Options must have category, url and size keys")
     end
-  end
-
-  def source_enabled?
-    @source&.enabled
   end
 
   def opts

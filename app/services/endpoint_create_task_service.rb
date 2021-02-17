@@ -6,10 +6,6 @@ class EndpointCreateTaskService
   def process
     validate_options
     Source.update(@options[:source_id], :mqtt_client_id => @options[:receptor_node])
-
-    Rails.logger.info("Starting availability check for source #{@options[:source_id]}")
-    task = CheckAvailabilityTaskService.new(@options).process.task
-    task.dispatch
   end
 
   def validate_options

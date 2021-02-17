@@ -1,4 +1,6 @@
 class Source < ApplicationRecord
+  after_update :dispatch_check_availability_task, :if => proc { saved_change_to_enabled?(from: false, to: true) && ready_for_check? }
+
   attribute :uid, :string, :default => -> { SecureRandom.uuid }
 
   belongs_to :tenant
@@ -24,4 +26,14 @@ class Source < ApplicationRecord
 
   # Tasks
   has_many :tasks
+
+  def ready_for_check?
+    mqtt_client_id && enabled
+  end
+
+  def dispatch_check_availability_task
+    Rails.logger.info("Starting availability check for source #{id}")
+    task = CheckAvailabilityTaskService.new(:source_id => id).process.task
+    task.dispatch
+  end
 end

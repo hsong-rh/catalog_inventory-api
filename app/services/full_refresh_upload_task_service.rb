@@ -2,7 +2,7 @@ class FullRefreshUploadTaskService < TaskService
   attr_reader :task
 
   def process
-    unless source_enabled?
+    unless @source.enabled
       Rails.logger.debug("Source #{source_id} is disabled")
       return self
     end

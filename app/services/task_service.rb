@@ -4,6 +4,7 @@ class TaskService
   def initialize(options)
     @options = options.deep_symbolize_keys
     validate_options
+    @source = Source.find_by(:id => @options[:source_id])
   end
 
   private
@@ -26,14 +27,6 @@ class TaskService
 
   def source_id
     @options[:source_id]
-  end
-
-  def source_enabled?
-    Source.find_by(:id => source_id)&.enabled
-  end
-
-  def source_refresh?
-    Source.find_by(:id => source_id)&.mqtt_client_id.nil? || !source_enabled?
   end
 
   def fetch_related
