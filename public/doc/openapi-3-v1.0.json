@@ -3297,11 +3297,13 @@
         "type": "object",
         "properties": {
           "archived_at": {
+            "title": "Archived",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "created_at": {
+            "title": "Created",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
@@ -3323,7 +3325,7 @@
           },
           "mqtt_client_id": {
             "example": "The GUID of the RedHat connect client being used",
-            "title": "RedHatConnectClientId",
+            "title": "RedHat Connect Client Id",
             "readOnly": true,
             "type": "string"
           },
@@ -3334,6 +3336,7 @@
             "readOnly": true
           },
           "refresh_state": {
+            "title": "Refresh state",
             "type": "string"
           },
           "bytes_received": {
@@ -3343,41 +3346,47 @@
             "type": "integer"
           },
           "refresh_started_at": {
+            "title": "Refresh started",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "refresh_finished_at": {
+            "title": "Refresh finished",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "last_refresh_message": {
-            "title": "LastRefreshMessage",
+            "title": "Last refresh message",
             "readOnly": true,
             "type": "string"
           },
           "refresh_task_id": {
+            "title": "Refresh task",
             "format": "uuid",
             "readOnly": true,
             "type": "string"
           },
           "availability_status": {
             "example": "The availability status of source",
-            "title": "AvailabilityStatus",
+            "title": "Availability Status",
             "type": "string"
           },
           "last_successful_refresh_at": {
+            "title": "Last successful refresh",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "last_checked_at": {
+            "title": "Last checked",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
           },
           "last_available_at": {
+            "title": "Last available",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
@@ -3388,6 +3397,7 @@
             "type": "string"
           },
           "updated_at": {
+            "title": "Updated",
             "format": "date-time",
             "readOnly": true,
             "type": "string"
