@@ -22,6 +22,7 @@ class PersisterTaskService
     when "unchanged"
       @source.update!(:refresh_state              => "Done",
                       :last_refresh_message       => "No changes detected, nothing uploaded from worker",
+                      :refresh_finished_at        => Time.current,
                       :last_successful_refresh_at => @upload_task.updated_at)
 
       Rails.logger.info("No changes detected on source #{@source.id}, nothing uploaded from worker")

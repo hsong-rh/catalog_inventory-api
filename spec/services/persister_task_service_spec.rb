@@ -37,14 +37,14 @@ describe PersisterTaskService do
     context "when task status is error" do
       let(:source) { FactoryBot.create(:source, :enabled => true, :tenant => tenant) }
       let(:task) { FactoryBot.create(:task, :source => source, :tenant => tenant, :status => 'error', :output => errors) }
-      let(:errors) { {"errors" => ["somethig", "wrong"]} }
+      let(:errors) { {"errors" => ["something", "wrong"]} }
 
       it "should return source" do
         subject.process
         source.reload
 
         expect(source.refresh_state).to eq("Error")
-        expect(source.last_refresh_message).to eq("somethig; wrong")
+        expect(source.last_refresh_message).to eq("something; wrong")
       end
     end
 

@@ -9,7 +9,7 @@ class SourceRefreshService
     else
       task = Task.find(@source.refresh_task_id)
 
-      if task.status == "error"
+      if ["error", "unchanged"].include?(task.status)
         dispatch_refresh_upload_task
         return self
       end

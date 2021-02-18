@@ -3499,12 +3499,24 @@
             "$ref": "#/components/schemas/ID"
           },
           "state": {
-            "example": "Running",
+            "example": "running",
+            "enum": [
+              "pending",
+              "queued",
+              "running",
+              "completed"
+            ],
             "title": "State",
             "type": "string"
           },
           "status": {
-            "example": "Error",
+            "example": "error",
+            "enum": [
+              "ok",
+              "warn",
+              "unchanged",
+              "error"
+            ],
             "title": "Status",
             "type": "string"
           },

@@ -37,14 +37,6 @@ class FullRefreshUploadTaskService < TaskService
     end
   end
 
-  def task_input
-    if @source.previous_sha.present? && @source.previous_size.present?
-      CatalogInventory::Payload.new(response_format, upload_url, jobs, @source.previous_sha, @source.previous_size).as_json
-    else
-      CatalogInventory::Payload.new(response_format, upload_url, jobs).as_json
-    end
-  end
-
   def jobs
     jobs = []
     jobs << templates_job
