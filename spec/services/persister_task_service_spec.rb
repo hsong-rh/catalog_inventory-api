@@ -33,5 +33,32 @@ describe PersisterTaskService do
         expect(Task.where(:type => "FullRefreshPersisterTask").count).to eq(0)
       end
     end
+
+    context "when task status is error" do
+      let(:source) { FactoryBot.create(:source, :enabled => true, :tenant => tenant) }
+      let(:task) { FactoryBot.create(:task, :source => source, :tenant => tenant, :status => 'error', :output => errors) }
+      let(:errors) { {"errors" => ["something", "wrong"]} }
+
+      it "should return source" do
+        subject.process
+        source.reload
+
+        expect(source.refresh_state).to eq("Error")
+        expect(source.last_refresh_message).to eq("something; wrong")
+      end
+    end
+
+    context "when task status is unchanged" do
+      let(:source) { FactoryBot.create(:source, :enabled => true, :tenant => tenant) }
+      let(:task) { FactoryBot.create(:task, :source => source, :tenant => tenant, :status => 'unchanged') }
+
+      it "should return source" do
+        subject.process
+        source.reload
+
+        expect(source.refresh_state).to eq("Done")
+        expect(source.last_refresh_message).to eq("No changes detected, nothing uploaded from worker")
+      end
+    end
   end
 end

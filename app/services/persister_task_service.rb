@@ -10,14 +10,22 @@ class PersisterTaskService
   def process
     return self unless @source.enabled
 
-    if @upload_task.status == "error"
-      errors = @upload_task.output["errors"].join("; ")
+    case @upload_task.status
+    when "error"
+      errors = @upload_task.output["errors"].join("\; ")
 
       @source.update!(:refresh_state        => "Error",
                       :last_refresh_message => errors,
                       :refresh_finished_at  => Time.current)
 
       Rails.logger.error("Upload Task #{@upload_task.id} failed: #{errors}")
+    when "unchanged"
+      @source.update!(:refresh_state              => "Done",
+                      :last_refresh_message       => "No changes detected, nothing uploaded from worker",
+                      :refresh_finished_at        => Time.current,
+                      :last_successful_refresh_at => @upload_task.updated_at)
+
+      Rails.logger.info("No changes detected on source #{@source.id}, nothing uploaded from worker")
     else
       @task = FullRefreshPersisterTask.create!(opts)
       @upload_task.update!(:child_task_id => @task.id)

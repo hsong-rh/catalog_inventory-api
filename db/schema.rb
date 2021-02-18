@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_15_152445) do
+ActiveRecord::Schema.define(version: 2021_02_17_040831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -313,6 +313,8 @@ ActiveRecord::Schema.define(version: 2021_02_15_152445) do
     t.boolean "enabled", default: false
     t.string "refresh_task_id"
     t.string "last_refresh_message"
+    t.string "previous_sha"
+    t.integer "previous_size"
     t.index ["tenant_id", "uid"], name: "index_sources_on_tenant_id_and_uid", unique: true
   end
 

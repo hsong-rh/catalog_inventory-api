@@ -14,7 +14,7 @@ class TaskService
   end
 
   def task_input
-    CatalogInventory::Payload.new(response_format, upload_url, jobs).as_json
+    CatalogInventory::Payload.new(response_format, upload_url, jobs, @source&.previous_sha, @source&.previous_size).as_json
   end
 
   def upload_url
