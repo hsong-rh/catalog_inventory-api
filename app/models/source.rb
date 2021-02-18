@@ -9,7 +9,7 @@ class Source < ApplicationRecord
   # Service Catalog Inventory Objects
   has_many :service_credential_types
   has_many :service_credentials
-  has_many :service_offerings
+  has_many :service_offerings, :dependent => :destroy
   has_many :service_offering_nodes
   has_many :service_offering_icons
   has_many :service_offering_service_credentials, :through => :service_offerings
@@ -25,7 +25,7 @@ class Source < ApplicationRecord
   has_many :service_plans
 
   # Tasks
-  has_many :tasks
+  has_many :tasks, :dependent => :destroy
 
   def ready_for_check?
     mqtt_client_id && enabled
