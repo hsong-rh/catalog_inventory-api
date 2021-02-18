@@ -28,8 +28,6 @@ class MQTTControllerService
 
   def send_to_cloud_controller
     account = @task.tenant.external_tenant
-    # TODO: Remove account once Cloud Controller starts getting the account #
-    account = "111000"
 
     cc_url = File.join(@mqtt_client_url, API_VERSION, "message")
     body = {'account':   account,
