@@ -3504,6 +3504,7 @@
               "pending",
               "queued",
               "running",
+              "timedout",
               "completed"
             ],
             "title": "State",

@@ -15,7 +15,7 @@ class SourceRefreshService
       end
 
       if task.timed_out?
-        task.update!(:state => "timedout", :status => "error")
+        task.update!(:state => "timedout", :status => "error", :output => {"errors" => ["Timed out"]})
         dispatch_refresh_upload_task
         return self
       end
