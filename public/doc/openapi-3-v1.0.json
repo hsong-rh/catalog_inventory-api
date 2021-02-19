@@ -3373,6 +3373,11 @@
             "title": "Availability Status",
             "type": "string"
           },
+          "availability_message": {
+            "title": "AvailabilityMessage",
+            "readOnly": true,
+            "type": "string"
+          },
           "last_successful_refresh_at": {
             "title": "Last successful refresh",
             "format": "date-time",
