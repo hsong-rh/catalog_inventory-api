@@ -11,13 +11,7 @@ module Api
           payload = params_for_update.to_h
           payload["id"] = obj.id
           payload["output"] = obj.output unless payload.has_key?("output")
-          CatalogInventory::Api::Messaging.client.publish_topic(
-            # TODO:
-            :service => "platform.catalog-inventory.task-output-stream",
-            :event   => "Task.update",
-            :payload => payload,
-            :headers => Insights::API::Common::Request.current_forwardable
-          )
+          KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, obj.forwardable_headers)
         end
 
         head :no_content
