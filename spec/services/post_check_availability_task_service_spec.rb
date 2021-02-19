@@ -28,7 +28,7 @@ describe PostCheckAvailabilityTaskService do
 
         expect(source.last_available_at).to eq(task.created_at.iso8601)
         expect(source.info).to eq(output)
-        expect(source.availability_message).to be_nil
+        expect(source.availability_message).to eq('Available')
         expect(source.availability_status).to eq('available')
         expect(source.last_checked_at).to eq(task.created_at.iso8601)
       end
