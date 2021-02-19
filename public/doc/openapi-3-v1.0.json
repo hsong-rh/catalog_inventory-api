@@ -3374,7 +3374,7 @@
             "type": "string"
           },
           "availability_message": {
-            "title": "AvailabilityMessage",
+            "title": "Availability Message",
             "readOnly": true,
             "type": "string"
           },
