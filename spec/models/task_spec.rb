@@ -6,6 +6,8 @@ describe Task do
   let(:time_interval) { ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 }
 
   describe "#timed_out" do
+    before { Timecop.safe_mode = true }
+
     context "when task is completed" do
       let(:state) { "completed" }
 
@@ -34,8 +36,6 @@ describe Task do
           expect(task.timed_out?).to be_falsey
         end
       end
-
-      after { Timecop.return }
     end
   end
 end
