@@ -28,6 +28,7 @@ class PostCheckAvailabilityTaskService < TaskService
     when "ok"
       update_opts[:last_available_at] = @task.created_at.iso8601
       update_opts[:info] = @options[:output]
+      update_opts[:availability_message] = 'Available'
     when "error"
       update_opts[:availability_message] = @task.output["errors"].join("\; ")
     end
