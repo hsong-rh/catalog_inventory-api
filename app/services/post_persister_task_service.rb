@@ -1,4 +1,11 @@
 class PostPersisterTaskService < TaskService
+  def initialize(options)
+    super
+    @upload_task = Task.where(:child_task_id => @options[:task].id).first
+
+    raise "No refresh task with child_task_id #{@options[:task].id} is found" if @upload_task.nil?
+  end
+
   def process
     update_source
     self
@@ -19,9 +26,9 @@ class PostPersisterTaskService < TaskService
   end
 
   def ok_options
-    {:last_successful_refresh_at => @options[:task][:input]["refresh_request_at"],
-     :previous_sha               => @options[:task][:output]["sha256"],
-     :previous_size              => @options[:task][:output]["tar_size"],
+    {:last_successful_refresh_at => @upload_task.created_at,
+     :previous_sha               => @upload_task.output["sha256"],
+     :previous_size              => @upload_task.output["tar_size"],
      :refresh_finished_at        => Time.current,
      :last_refresh_message       => refresh_stats_message,
      :refresh_state              => "Done"}

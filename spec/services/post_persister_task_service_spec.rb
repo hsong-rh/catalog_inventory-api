@@ -5,6 +5,8 @@ describe PostPersisterTaskService do
   let(:input) { { "refresh_request_at" => Time.current} }
   let(:status) { 'ok' }
   let(:task) { FactoryBot.create(:task, :source => source, :tenant => tenant, :input => input, :output => output, :status => status) }
+  let!(:upload_task) { FactoryBot.create(:task, :source => source, :tenant => tenant, :output => upload_output, :created_at => Time.current, :child_task_id => task.id) }
+  let(:upload_output) { {"sha256" => "abcd", "size" => 100} }
   let(:params) { {'source_id' => source.id, 'tenant_id' => tenant.id, 'task' => task} }
   let(:subject) { described_class.new(params) }
   let(:refresh_state) { "Done" }
