@@ -2,7 +2,7 @@ class Task < ApplicationRecord
   belongs_to :tenant
   belongs_to :source, :optional => true
 
-  validates :state,  :inclusion => {:in => %w[pending queued running completed]}
+  validates :state,  :inclusion => {:in => %w[pending queued running timedout completed]}
   validates :status, :inclusion => {:in => %w[ok warn unchanged error]}
 
   acts_as_tenant(:tenant)
@@ -12,5 +12,10 @@ class Task < ApplicationRecord
   end
 
   def dispatch
+  end
+
+  def timed_out?
+    time_interval = ClowderConfig.instance["SOURCE_REFRESH_TIMEOUT"] * 60 # in seconds
+    state != 'completed' && created_at + time_interval < Time.current
   end
 end
