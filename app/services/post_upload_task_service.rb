@@ -25,9 +25,10 @@ class PostUploadTaskService < TaskService
   end
 
   def unchanged_options
-    {:refresh_finished_at  => Time.current,
-     :last_refresh_message => @options[:task].message,
-     :refresh_state        => "Done"}
+    {:refresh_finished_at        => Time.current,
+     :last_refresh_message       => @options[:task].message,
+     :last_successful_refresh_at => @options[:task].created_at,
+     :refresh_state              => "Done"}
   end
 
   def error_options

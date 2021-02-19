@@ -20,6 +20,7 @@ describe PostUploadTaskService do
 
       expect(source.refresh_state).to eq("Done")
       expect(source.last_refresh_message).to eq(message)
+      expect(source.last_successful_refresh_at.iso8601).to eq(task.created_at.iso8601)
     end
   end
 
