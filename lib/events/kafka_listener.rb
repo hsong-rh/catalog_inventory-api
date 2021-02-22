@@ -36,9 +36,9 @@ module Events
 
       # Kafka message from Ingress has no headers. We need to prepare the headers from its payload.
       if insights_headers.empty?
-        if event.payload.class == Hash && event.payload.has_key?("params") && event.payload["params"].has_key?("external_tenant")
+        if event.payload.instance_of?(Hash) && event.payload.key?("params") && event.payload["params"].key?("external_tenant")
           # check availability from source doesn't have headers
-          insights_headers['x-rh-insights-request-id'] = "unknown"
+          insights_headers['x-rh-insights-request-id'] = "scheduled_task_#{Time.now.utc.to_s.tr(' ', '_')}"
           insights_headers['x-rh-identity'] = Headers::Service.x_rh_identity_tenant_user(event.payload["params"]["external_tenant"])
         else
           # ingress doesn't have any header
