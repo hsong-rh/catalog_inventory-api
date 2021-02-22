@@ -2,7 +2,19 @@ class LaunchJobTask < MqttClientTask
   after_update :post_launch_job_task, :if => proc { state == 'completed' && status == 'ok' }
 
   def post_launch_job_task
-    PostLaunchJobTaskService.new(service_options).process
+    if tower_job_successful?
+      PostLaunchJobTaskService.new(service_options).process
+    else
+      self.status = 'error'
+      self.message = output["description"] if output.present?
+      save!
+
+      Rails.logger.error("Task #{id} failed: #{output}")
+    end
+  end
+
+  def tower_job_successful?
+    output.present? && output["status"] == "successful"
   end
 
   def service_options
