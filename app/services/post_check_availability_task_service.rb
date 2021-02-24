@@ -10,7 +10,7 @@ class PostCheckAvailabilityTaskService < TaskService
   def process
     update_source
     KafkaEventService.raise_event("platform.sources.status", "availability_status", kafka_payload.to_json)
-    @task.status == "ok" ? SourceRefreshService.new(@source).process : Rails.logger.error("Task #{@task.id} failed")
+    @task.status == "ok" ? ok_services : Rails.logger.error("Task #{@task.id} failed")
     self
   end
 
@@ -19,6 +19,11 @@ class PostCheckAvailabilityTaskService < TaskService
   def validate_options
     super
     raise("Options must have task key") if @options[:task].blank?
+  end
+
+  def ok_services
+    TaskRetryService.new(:source_id => @source.id).process
+    SourceRefreshService.new(@source).process
   end
 
   def update_source

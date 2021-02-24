@@ -55,6 +55,7 @@ class ClowderConfig
       options["CATALOG_INVENTORY_EXTERNAL_URL"] = ENV["CATALOG_INVENTORY_EXTERNAL_URL"] || "Not Specified"
       options["CATALOG_INVENTORY_INTERNAL_URL"] = ENV["CATALOG_INVENTORY_INTERNAL_URL"] || "Not specified"
       options["SOURCE_REFRESH_TIMEOUT"] = ENV["SOURCE_REFRESH_TIMEOUT"] || 10 # in minutes
+      options["LOST_TIME_INTERVAL"] = ENV["LOST_TIME_INTERVAL"] || 30 # in minutes
     end
   end
 
