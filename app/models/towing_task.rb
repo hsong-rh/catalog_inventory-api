@@ -1,4 +1,4 @@
-class RetryJobTask < LaunchJobTask
+class TowingTask < LaunchJobTask
   after_update :post_retry_job_task, :if => proc { state == 'completed' }
 
   def post_retry_job_task

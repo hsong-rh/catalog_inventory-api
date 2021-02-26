@@ -1,11 +1,11 @@
-describe RetryTaskService do
+describe TowingTaskService do
   include ::Spec::Support::TenantIdentity
 
   let(:source) { FactoryBot.create(:source, :tenant => tenant) }
   let(:params) { {'source_id' => source.id} }
   let(:subject) { described_class.new(params) }
   let!(:launch_job_task) { LaunchJobTask.create!(:name => "task", :state => "running", :status => "ok", :tenant => tenant, :source => source, :input => input, :output => {"url" => "api/v1/url"}) }
-  let(:time_interval) { ClowderConfig.instance["LOST_TIME_INTERVAL"] * 60 }
+  let(:time_interval) { ClowderConfig.instance["INACTIVE_TASK_REMINDER_TIME"] * 60 }
   let(:input) { {"jobs" => [{"method" => "launch", "href_slug" => "api/v2/job_templates/5/launch/"}]} }
 
   around do |example|

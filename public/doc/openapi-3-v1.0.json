@@ -3567,7 +3567,7 @@
       "LaunchJobTask": {
         "$ref": "#/components/schemas/Task"
       },
-      "RetryJobTask": {
+      "TowingTask": {
         "$ref": "#/components/schemas/Task"
       },
       "FullRefreshPersisterTask": {

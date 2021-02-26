@@ -22,7 +22,7 @@ class PostCheckAvailabilityTaskService < TaskService
   end
 
   def ok_services
-    RetryTaskService.new(:source_id => @source.id).process
+    TowingTaskService.new(:source_id => @source.id).process
     SourceRefreshService.new(@source).process
   end
 

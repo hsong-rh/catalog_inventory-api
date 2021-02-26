@@ -51,6 +51,10 @@ objects:
         value: ${catalog_inventory_URL}
       - name: CLOWDER_ENABLED
         value: ${CLOWDER_ENABLED}
+      - name: INACTIVE_TASK_REMINDER_TIME
+        value: ${INACTIVE_TASK_REMINDER_TIME}
+      - name: SOURCE_REFRESH_TIMEOUT
+        value: ${SOURCE_REFRESH_TIMEOUT}
       resources:
         limits:
           cpu: ${CPU_LIMIT}
@@ -91,6 +95,10 @@ parameters:
   value: localhost
 - name: QUEUE_PORT
   value: "9092"
+- name: INACTIVE_TASK_REMINDER_TIME
+  value: 30
+- name: SOURCE_REFRESH_TIMEOUT
+  value: 10
 - name: catalog_inventory_VALIDTOPICS
   value: event-stream,operations-ansible-tower,catalog
 - name: catalog_inventory_URL

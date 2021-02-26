@@ -1,13 +1,13 @@
-class RetryTaskService < TaskService
-  LOST_TIME_INTERVAL = ClowderConfig.instance["LOST_TIME_INTERVAL"].to_i * 60
+class TowingTaskService < TaskService
+  INACTIVE_TASK_REMINDER_TIME = ClowderConfig.instance["INACTIVE_TASK_REMINDER_TIME"].to_i * 60
 
   def process
-    interrupted_tasks.each do |task|
-      retry_task = RetryJobTask.create!(task_options(task))
-      retry_task.dispatch
+    inactive_tasks.each do |task|
+      towing_task = TowingTask.create!(task_options(task))
+      towing_task.dispatch
 
-      Rails.logger.info("Retry the interrupted task: #{task}")
-      task.update!(:message => "interrupted", :child_task_id => retry_task.id)
+      Rails.logger.info("Towing the inactive task: #{task}")
+      task.update!(:message => "interrupted", :child_task_id => towing_task.id)
     end
 
     self
@@ -17,9 +17,9 @@ class RetryTaskService < TaskService
 
   private
 
-  def interrupted_tasks
+  def inactive_tasks
     tasks = Task.arel_table
-    LaunchJobTask.where(tasks[:created_at].lt(Time.current - LOST_TIME_INTERVAL).and(tasks[:state].eq("running")).and(tasks[:source_id].eq(@source.id)))
+    LaunchJobTask.where(tasks[:created_at].lt(Time.current - INACTIVE_TASK_REMINDER_TIME).and(tasks[:state].eq("running")).and(tasks[:source_id].eq(@source.id)))
   end
 
   def task_options(task)
