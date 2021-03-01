@@ -1,4 +1,3 @@
-require 'mqtt'
 require 'net/http'
 require 'uri'
 require 'json'
@@ -14,11 +13,10 @@ class MQTTControllerService
     @task_id  = @options[:task_id]
     @task_url = @options[:task_url]
     @mqtt_client_guid = @options[:mqtt_client_guid]
-    @mqtt_client_url  = @options[:mqtt_client_url]
+    @cloud_connector_url = @options[:cloud_connector_url]
     @task = Task.find(@task_id)
   end
 
-  # TODO: will replace by the mqtt controller in cluster
   def process
     Rails.logger.info("publish: #{payload}")
     send_to_cloud_controller
@@ -29,7 +27,7 @@ class MQTTControllerService
   def send_to_cloud_controller
     account = @task.tenant.external_tenant
 
-    cc_url = File.join(@mqtt_client_url, API_VERSION, "message")
+    cc_url = File.join(@cloud_connector_url, API_VERSION, "message")
     body = {'account':   account,
             'recipient': @mqtt_client_guid,
             'directive': DIRECTIVE,
@@ -57,13 +55,13 @@ class MQTTControllerService
   end
 
   def validate_options
-    unless @options[:task_id].present? && @options[:task_url].present? && @options[:mqtt_client_url].present? && @options[:mqtt_client_guid].present?
-      raise("Options must have task_id, task_url, mqtt_client_url and mqtt_client_guid keys")
+    unless @options[:task_id].present? && @options[:task_url].present? && @options[:cloud_connector_url].present? && @options[:mqtt_client_guid].present?
+      raise("Options must have task_id, task_url, cloud_connector_url and mqtt_client_guid keys")
     end
   end
 
   def publish
-    u = URI.parse(@mqtt_client_url)
+    u = URI.parse(@cloud_connector_url)
     client = MQTT::Client.new
     if u.scheme == "mqtts"
       client.ssl = true

@@ -4,9 +4,9 @@ plugin "bundler-inject", "~> 1.1"
 require File.join(Bundler::Plugin.index.load_paths("bundler-inject")[0], "bundler-inject") rescue nil
 
 gem 'activerecord-virtual_attributes', '~> 1.5'
-gem 'app-common-ruby', :git => "https://github.com/hsong-rh/app-common-ruby.git", :branch => "change_clowder_enabled", :require => false
+gem 'app-common-ruby', :git => "https://github.com/RedHatInsights/clowder-common-ruby.git", :branch => "master", :require => false
 gem 'cloudwatchlogger',                '~> 0.2.1'
-gem 'insights-api-common',             '~> 5.0.1' 
+gem 'insights-api-common',             '~> 5.0.1'
 gem 'jbuilder',                        '~> 2.0'
 gem 'json-schema',                     '~> 2.8'
 gem 'manageiq-loggers',                "~> 0.4.0", ">= 0.4.2"
@@ -19,7 +19,6 @@ gem 'puma',                            '~> 4.3.5', '>= 4.3.5'
 gem 'rack-cors',                       '>= 1.0.4'
 gem 'rails',                           '>= 5.2.2.1', '~> 5.2.2'
 gem 'sources-api-client',              '~> 1.0'
-gem 'mqtt'
 
 group :development, :test do
   gem "byebug", :platform => :mri

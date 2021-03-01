@@ -35,8 +35,8 @@ objects:
         successThreshold: 1
         timeoutSeconds: 120
       env:
-      - name: MQTT_CLIENT_URL
-        value: ${MQTT_CLIENT_URL}
+      - name: CLOUD_CONNECTOR_URL
+        value: ${CLOUD_CONNECTOR_URL}
       - name: SOURCES_URL
         value: ${SOURCES_URL}
       - name: QUEUE_HOST
@@ -87,7 +87,7 @@ objects:
       version: 10
 
 parameters:
-- name: MQTT_CLIENT_URL
+- name: CLOUD_CONNECTOR_URL
   value: mqtt://localhost:1883
 - name: SOURCES_URL
   value: https://ci.cloud.redhat.com/
