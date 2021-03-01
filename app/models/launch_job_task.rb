@@ -17,6 +17,10 @@ class LaunchJobTask < MqttClientTask
     output.present? && output["status"] == "successful"
   end
 
+  def towing_tasks
+    TowingTask.where(:child_task_id => id)
+  end
+
   def service_options
     super.tap do |options|
       options[:service_offering_id] = service_offering.id.to_s

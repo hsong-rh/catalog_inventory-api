@@ -1,29 +1,37 @@
 class TowingTaskService < TaskService
   INACTIVE_TASK_REMINDER_TIME = ClowderConfig.instance["INACTIVE_TASK_REMINDER_TIME"].to_i * 60
+  INCOMPLETE_TASK_STATES = %w[pending running].freeze
 
   def process
     inactive_tasks.each do |task|
+      if task.output.blank? || task.output["url"].blank?
+        Rails.logger.error("No need to tow the task #{task.inspect}")
+        task.update!(:state => "completed", :status => "error")
+        continue
+      end
+
       towing_task = TowingTask.create!(task_options(task))
       towing_task.dispatch
 
       Rails.logger.info("Towing the inactive task: #{task}")
-      task.update!(:message => "interrupted", :child_task_id => towing_task.id)
+      task.update!(:message => "Inactive, need towing task to reactivate")
     end
 
     self
   rescue => e
-    Rails.logger.error("Retry task failed: #{e.message}")
+    Rails.logger.error("Towing task failed: #{e.message}")
   end
 
   private
 
   def inactive_tasks
     tasks = Task.arel_table
-    LaunchJobTask.where(tasks[:created_at].lt(Time.current - INACTIVE_TASK_REMINDER_TIME).and(tasks[:state].eq("running")).and(tasks[:source_id].eq(@source.id)))
+    LaunchJobTask.where(tasks[:created_at].lt(Time.current - INACTIVE_TASK_REMINDER_TIME).and(tasks[:state].in(INCOMPLETE_TASK_STATES)).and(tasks[:source_id].eq(@source.id)))
   end
 
   def task_options(task)
     {}.tap do |opts|
+      opts[:child_task_id] = task.id
       opts[:forwardable_headers] = task.forwardable_headers
       opts[:source_id] = task.source.id
       opts[:tenant] = task.tenant
@@ -34,7 +42,7 @@ class TowingTaskService < TaskService
   end
 
   def input(task)
-    CatalogInventory::Payload.new('json', upload_url, jobs(task), @source.previous_sha, @source.previous_size).as_json
+    CatalogInventory::Payload.new('json', upload_url, jobs(task)).as_json
   end
 
   def jobs(task)

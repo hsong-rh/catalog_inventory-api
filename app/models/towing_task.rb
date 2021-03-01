@@ -1,9 +1,8 @@
 class TowingTask < LaunchJobTask
-  after_update :post_retry_job_task, :if => proc { state == 'completed' }
+  after_update :post_towing_task, :if => proc { state == 'completed' }
 
-  def post_retry_job_task
-    original_task = LaunchJobTask.find_by(:child_task_id => id)
-    raise "Can't find original task for retry task #{id}" if original_task.blank?
+  def post_towing_task
+    original_task = LaunchJobTask.find(child_task_id)
 
     if original_task.state != 'completed'
       update_task(original_task)
