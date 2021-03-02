@@ -2,6 +2,8 @@ class CheckAvailabilityTaskService < TaskService
   attr_reader :task
 
   def process
+    raise "Source #{source_id} does not exist" unless @source
+
     refresh unless @source.ready_for_check?
 
     @task = CheckAvailabilityTask.create!(task_options)

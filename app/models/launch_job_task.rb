@@ -31,6 +31,8 @@ class LaunchJobTask < MqttClientTask
   def payload
     {}.tap do |options|
       options[:id] = id
+      options[:status] = status
+      options[:state] = state
       options[:source_id] = source.id
       options[:input] = input
       options[:output] = output
