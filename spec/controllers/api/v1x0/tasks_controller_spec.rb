@@ -20,12 +20,7 @@ RSpec.describe Api::V1x0::TasksController, :type => :request do
 
   it "patch /tasks/:id updates a Task" do
     task = LaunchJobTask.create!(:state => "running", :status => "ok", :source => source, :tenant => tenant)
-    expect(client).to receive(:publish_topic).with(
-      :service => "platform.catalog-inventory.task-output-stream",
-      :event   => "Task.update",
-      :payload => {"state" => "completed", "status" => "ok", "output" => output, "id" => task.id.to_s},
-      :headers => {"x-rh-identity" => identity}
-    )
+    expect(client).to receive(:publish_topic).once
 
     patch(api_v1x0_task_url(task.id), :params => {:state => "completed", :status => "ok", :output => output}.to_json, :headers => headers)
 

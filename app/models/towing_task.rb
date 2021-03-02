@@ -16,6 +16,7 @@ class TowingTask < LaunchJobTask
       task.output = output
       task.state  = 'completed'
       task.status = 'ok'
+      task.message = "Done by TowingTask #{id}"
       task.save!
     end
   rescue ActiveRecord::LockWaitTimeout
