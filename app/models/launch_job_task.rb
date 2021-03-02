@@ -1,24 +1,44 @@
 class LaunchJobTask < MqttClientTask
-  after_update :post_launch_job_task, :if => proc { state == 'completed' && status == 'ok' }
+  after_update :post_launch_job_task, :if => proc { state == 'completed' }
 
   def post_launch_job_task
-    if tower_job_successful?
-      PostLaunchJobTaskService.new(service_options).process
-    else
-      self.status = 'error'
-      self.message = output["description"] if output.present?
-      save!
+    case status
+    when 'ok'
+      if tower_job_successful?
+        PostLaunchJobTaskService.new(service_options).process
+        KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, forwardable_headers)
+      else
+        self.status = 'error'
+        self.message = output["description"] if output.present?
+        save!
 
-      Rails.logger.error("Task #{id} failed: #{output}")
+        Rails.logger.error("Task #{id} failed: #{output}")
+      end
+    when 'error'
+      # called by above save!
+      KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, forwardable_headers)
+    else
+      Rails.logger.error("LaunchJobTask #{id} has invalid status #{status}")
+    end
+  end
+
+  def towing_tasks
+    TowingTask.where(:child_task_id => id)
+  end
+
+  private
+
+  def payload
+    {}.tap do |options|
+      options[:id] = id
+      options[:source_id] = source.id
+      options[:input] = input
+      options[:output] = output
     end
   end
 
   def tower_job_successful?
     output.present? && output["status"] == "successful"
-  end
-
-  def towing_tasks
-    TowingTask.where(:child_task_id => id)
   end
 
   def service_options

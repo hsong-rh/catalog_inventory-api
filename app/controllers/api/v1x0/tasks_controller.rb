@@ -6,13 +6,6 @@ module Api
 
       def update
         model.update(params.require(:id), params_for_update)
-        obj = model.find(params.require(:id))
-        if obj.type == "LaunchJobTask"
-          payload = params_for_update.to_h
-          payload["id"] = obj.id
-          payload["output"] = obj.output unless payload.has_key?("output")
-          KafkaEventService.raise_event("platform.catalog-inventory.task-output-stream", "Task.update", payload, obj.forwardable_headers)
-        end
 
         head :no_content
       end

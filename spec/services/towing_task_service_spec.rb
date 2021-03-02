@@ -24,6 +24,8 @@ describe TowingTaskService do
     shared_examples_for "#process bad output" do
       it "updates LaunchJobTask state and status" do
         Timecop.travel(Time.current + time_interval) do
+          expect(KafkaEventService).to receive(:raise_event).once
+
           subject.process
           launch_job_task.reload
 

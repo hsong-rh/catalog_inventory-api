@@ -3,6 +3,10 @@ describe LaunchJobTask do
 
   let(:source) { Source.create!(:name => "source1", :tenant => tenant) }
 
+  around do |example|
+    Insights::API::Common::Request.with_request(default_request) { example.call }
+  end
+
   describe "after_update callback" do
     context "when LaunchJobTask has completed state" do
       let(:launch_job_task) { LaunchJobTask.create!(:name => "task", :state => "completed", :status => "ok", :tenant => tenant, :source => source) }
@@ -27,13 +31,15 @@ describe LaunchJobTask do
 
   describe "#post_launch_job_task" do
     let(:launch_job_task) do
-      LaunchJobTask.create!(:name => "task", :state => "pending", :status => "ok", :tenant => tenant, :source => source, :output => output)
+      LaunchJobTask.create!(:name => "task", :state => "completed", :status => "ok", :tenant => tenant, :source => source, :output => output)
     end
 
     context "when LaunchJobTask's output has non-successful status" do
       let(:output) { {"description" => "Bad thing happened", "status" => "failed"} }
 
       it "run PostLaunchJobTaskService" do
+        expect(KafkaEventService).to receive(:raise_event).once
+
         launch_job_task.post_launch_job_task
 
         launch_job_task.reload
@@ -52,6 +58,7 @@ describe LaunchJobTask do
       end
 
       it "run PostLaunchJobTaskService" do
+        expect(KafkaEventService).to receive(:raise_event).once
         expect(PostLaunchJobTaskService).to receive(:new).with(opts).and_return(service)
         expect(service).to receive(:process).and_return(service)
 
