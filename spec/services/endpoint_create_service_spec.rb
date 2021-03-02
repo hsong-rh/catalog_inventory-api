@@ -8,11 +8,11 @@ describe EndpointCreateTaskService do
     let(:client_id) { SecureRandom.uuid }
     let(:params) { {"source_id" => source.id, "receptor_node" => client_id} }
 
-    it "updates mqtt_client_id" do
+    it "updates cloud_connector_id" do
       subject.process
 
       source.reload
-      expect(source.mqtt_client_id).to eq(client_id)
+      expect(source.cloud_connector_id).to eq(client_id)
     end
 
     context "when options missing receptor_node" do

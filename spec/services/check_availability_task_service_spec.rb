@@ -14,7 +14,7 @@ describe CheckAvailabilityTaskService do
     end
 
     context "when source is ready for availability check" do
-      let(:source) { FactoryBot.create(:source, :tenant => tenant, :mqtt_client_id => 'client_id', :enabled => true) }
+      let(:source) { FactoryBot.create(:source, :tenant => tenant, :cloud_connector_id => 'client_id', :enabled => true) }
 
       it "returns CheckAvailabilityTask type of task" do
         task = subject.process.task

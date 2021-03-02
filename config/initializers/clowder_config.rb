@@ -50,7 +50,7 @@ class ClowderConfig
 
       options["SOURCES_URL"] = ENV["SOURCES_URL"]
       # TODO: update with valid url later
-      options["CLOUD_CONNECTOR_URL"] = ENV["CLOUD_CONNECTOR_URL"] || "mqtt://localhost:1883"
+      options["CLOUD_CONNECTOR_URL"] = ENV["CLOUD_CONNECTOR_URL"]
       options["UPLOAD_URL"] = ENV["UPLOAD_URL"] || "https://ci.cloud.redhat.com/api/ingress/v1/upload"
       options["CATALOG_INVENTORY_EXTERNAL_URL"] = ENV["CATALOG_INVENTORY_EXTERNAL_URL"] || "Not Specified"
       options["CATALOG_INVENTORY_INTERNAL_URL"] = ENV["CATALOG_INVENTORY_INTERNAL_URL"] || "Not specified"

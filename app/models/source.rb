@@ -28,7 +28,7 @@ class Source < ApplicationRecord
   has_many :tasks, :dependent => :destroy
 
   def ready_for_check?
-    mqtt_client_id && enabled
+    cloud_connector_id && enabled
   end
 
   def dispatch_check_availability_task

@@ -3323,7 +3323,7 @@
             "readOnly": true,
             "type": "string"
           },
-          "mqtt_client_id": {
+          "cloud_connector_id": {
             "example": "The GUID of the RedHat connect client being used",
             "title": "RedHat Connect Client Id",
             "readOnly": true,
@@ -3527,7 +3527,7 @@
             "type": "string"
           },
           "type": {
-            "example": "MqttClientTask",
+            "example": "CloudConnectorTask",
             "title": "Type",
             "type": "string"
           },

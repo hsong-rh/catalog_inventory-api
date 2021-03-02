@@ -1,4 +1,4 @@
-class CheckAvailabilityTask < MqttClientTask
+class CheckAvailabilityTask < CloudConnectorTask
   after_update :post_check_availability_task, :if => proc { state == 'completed' }
 
   def post_check_availability_task

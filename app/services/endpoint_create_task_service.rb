@@ -5,7 +5,7 @@ class EndpointCreateTaskService
 
   def process
     validate_options
-    Source.update(@options[:source_id], :mqtt_client_id => @options[:receptor_node])
+    Source.update(@options[:source_id], :cloud_connector_id => @options[:receptor_node])
   end
 
   def validate_options

@@ -87,8 +87,6 @@ objects:
       version: 10
 
 parameters:
-- name: CLOUD_CONNECTOR_URL
-  value: mqtt://localhost:1883
 - name: SOURCES_URL
   value: https://ci.cloud.redhat.com/
 - name: QUEUE_HOST

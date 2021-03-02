@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_190445) do
+ActiveRecord::Schema.define(version: 2021_03_02_144831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -306,7 +306,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_190445) do
     t.datetime "refresh_finished_at"
     t.datetime "last_successful_refresh_at"
     t.jsonb "info"
-    t.string "mqtt_client_id"
+    t.string "cloud_connector_id"
     t.string "availability_status"
     t.datetime "last_checked_at"
     t.datetime "last_available_at"
