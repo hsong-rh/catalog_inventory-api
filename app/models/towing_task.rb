@@ -9,6 +9,9 @@ class TowingTask < LaunchJobTask
     end
   end
 
+  def post_launch_job_task
+  end
+
   private
 
   def update_task(task)
