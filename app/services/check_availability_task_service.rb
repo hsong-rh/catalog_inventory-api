@@ -31,7 +31,7 @@ class CheckAvailabilityTaskService < TaskService
 
     raise("Source #{source_id} is not ready for availability_check!") if endpoint.blank? || applications.data.empty?
 
-    Source.update(source_id, :mqtt_client_id => endpoint.receptor_node, :enabled => true)
+    Source.update(source_id, :cloud_connector_id => endpoint.receptor_node, :enabled => true)
   end
 
   def response_format

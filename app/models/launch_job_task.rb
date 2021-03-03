@@ -1,4 +1,4 @@
-class LaunchJobTask < MqttClientTask
+class LaunchJobTask < CloudConnectorTask
   after_update :post_launch_job_task, :if => proc { state == 'completed' }
 
   def post_launch_job_task

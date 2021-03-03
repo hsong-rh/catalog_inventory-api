@@ -13,11 +13,11 @@ describe TowingTaskService do
   end
 
   describe "#process" do
-    let(:service) { instance_double(MQTTControllerService) }
+    let(:service) { instance_double(CloudConnectorService) }
 
     before do
       Timecop.safe_mode = true
-      allow(MQTTControllerService).to receive(:new).and_return(service)
+      allow(CloudConnectorService).to receive(:new).and_return(service)
       allow(service).to receive(:process)
     end
 
