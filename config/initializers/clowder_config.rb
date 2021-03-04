@@ -1,4 +1,4 @@
-require 'app-common-ruby'
+require 'clowder-common-ruby'
 require 'singleton'
 
 class ClowderConfig
@@ -6,8 +6,8 @@ class ClowderConfig
 
   def self.instance
     @instance ||= {}.tap do |options|
-      if AppCommonRuby::Config.clowder_enabled?
-        config = AppCommonRuby::Config.load
+      if ClowderCommonRuby::Config.clowder_enabled?
+        config = ClowderCommonRuby::Config.load
         options["webPorts"] = config.webPort
         options["metricsPort"] = config.metricsPort
         options["metricsPath"] = config.metricsPath
