@@ -2,73 +2,77 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: catalog_inventory
+  name: catalog-inventory
 objects:
+- apiVersion: v1
+  kind: Secret # For ephemeral/local environment
+  metadata:
+    name: catalog-inventory-secrets
+    labels:
+      app: catalog-inventory
+  stringData:
+    encryption-key: "${ENCRYPTION_KEY}"
+    secret-key: "${SECRET_KEY}"
 - apiVersion: cloud.redhat.com/v1alpha1
   kind: ClowdApp
   metadata:
-    name: catalog_inventory
+    name: catalog-inventory
   spec:
     envName: ${ENV_NAME}
-    pods:
-    - name: service
-      image: ${IMAGE}:${IMAGE_TAG}
+    deployments:
+    - name: api
       minReplicas: ${{MIN_REPLICAS}}
-      livenessProbe:
-        failureThreshold: 3
-        httpGet:
-          path: /
-          port: 8000
-          scheme: HTTP
-        initialDelaySeconds: 35
-        periodSeconds: 5
-        successThreshold: 1
-        timeoutSeconds: 120
-      readinessProbe:
-        failureThreshold: 3
-        httpGet:
-          path: /
-          port: 8000
-          scheme: HTTP
-        initialDelaySeconds: 35
-        periodSeconds: 5
-        successThreshold: 1
-        timeoutSeconds: 120
-      env:
-      - name: CLOUD_CONNECTOR_URL
-        value: ${CLOUD_CONNECTOR_URL}
-      - name: SOURCES_URL
-        value: ${SOURCES_URL}
-      - name: QUEUE_HOST
-        value: ${QUEUE_HOST}
-      - name: QUEUE_PORT
-        value: ${QUEUE_PORT}
-      - name: catalog_inventory_LOG_LEVEL
-        value: ${LOG_LEVEL}
-      - name: catalog_inventory_VALIDTOPICS
-        value: ${catalog_inventory_VALIDTOPICS}
-      - name: catalog_inventory_URL
-        value: ${catalog_inventory_URL}
-      - name: CLOWDER_ENABLED
-        value: ${CLOWDER_ENABLED}
-      - name: INACTIVE_TASK_REMINDER_TIME
-        value: ${INACTIVE_TASK_REMINDER_TIME}
-      - name: SOURCE_REFRESH_TIMEOUT
-        value: ${SOURCE_REFRESH_TIMEOUT}
-      resources:
-        limits:
-          cpu: ${CPU_LIMIT}
-          memory: ${MEMORY_LIMIT}
-        requests:
-          cpu: 200m
-          memory: 256Mi
-      web: true
-      volumes:
-      - emptyDir: {}
-        name: tmpdir
-      volumeMounts:
-      - mountPath: /tmp
-        name: tmpdir
+      webServices:
+        public:
+          enabled: true
+      podSpec:
+        image: ${IMAGE}:${IMAGE_TAG}
+        env:
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: catalog-inventory-secrets
+              key: encryption-key
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: catalog-inventory-secrets
+              key: secret-key
+        - name: CLOUD_CONNECTOR_URL
+          value: ${CLOUD_CONNECTOR_URL}
+        - name: SOURCES_URL
+          value: ${SOURCES_URL}
+        - name: QUEUE_HOST
+          value: ${QUEUE_HOST}
+        - name: QUEUE_PORT
+          value: ${QUEUE_PORT}
+        - name: catalog-inventory_LOG_LEVEL
+          value: ${LOG_LEVEL}
+        - name: catalog-inventory_VALIDTOPICS
+          value: ${catalog-inventory_VALIDTOPICS}
+        - name: catalog-inventory_URL
+          value: ${catalog_inventory_URL}
+        - name: CLOWDER_ENABLED
+          value: ${CLOWDER_ENABLED}
+        - name: INACTIVE_TASK_REMINDER_TIME
+          value: ${INACTIVE_TASK_REMINDER_TIME}
+        - name: SOURCE_REFRESH_TIMEOUT
+          value: ${SOURCE_REFRESH_TIMEOUT}
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 120
+        resources:
+          limits:
+            cpu: ${CPU_LIMIT}
+            memory: ${MEMORY_LIMIT}
+          requests:
+            cpu: 200m
+            memory: 256Mi
     kafkaTopics:
     - replicas: 3
       partitions: 3
@@ -83,8 +87,7 @@ objects:
     - ingress
     - sources
     database:
-      name: catalog_inventory
-      version: 10
+      name: catalog_inventory_production
 
 parameters:
 - name: SOURCES_URL
@@ -94,14 +97,14 @@ parameters:
 - name: QUEUE_PORT
   value: "9092"
 - name: INACTIVE_TASK_REMINDER_TIME
-  value: 30
+  value: "30"
 - name: SOURCE_REFRESH_TIMEOUT
-  value: 10
-- name: catalog_inventory_VALIDTOPICS
+  value: "10"
+- name: catalog-inventory_VALIDTOPICS
   value: event-stream,operations-ansible-tower,catalog
-- name: catalog_inventory_URL
-  value: http://catalog_inventory:8080/api/v1.0
-- name: catalog_inventory_MAXSIZE
+- name: catalog-inventory_URL
+  value: http://catalog-inventory:8080/api/v1.0
+- name: catalog-inventory_MAXSIZE
   value: '104857600'
 - name: LOG_LEVEL
   value: INFO
@@ -118,10 +121,22 @@ parameters:
   required: true
 - description: Image name
   name: IMAGE
-  value: quay.io/cloudservices/catalog_inventory
+  value: quay.io/cloudservices/catalog_inventory-api
 - description: Determines Clowder deployment
   name: CLOWDER_ENABLED
   value: "true"
 - description: ClowdEnv Name
   name: ENV_NAME
   requred: false
+- name: ENCRYPTION_KEY
+  displayName: Encryption Key (Ephemeral)
+  required: true
+  description: Encryption Key for Passwords
+  from: "[a-zA-Z0-9]{43}"
+  generate: expression
+- name: SECRET_KEY
+  displayName: Secret Key (Ephemeral)
+  required: true
+  description: Rails SECRET_KEY_BASE
+  from: "[a-f0-9]{128}"
+  generate: expression
