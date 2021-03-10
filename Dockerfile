@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/ubi8/ubi:8.2-343
 
 RUN dnf -y --disableplugin=subscription-manager module enable ruby:2.5 && \
     dnf -y --disableplugin=subscription-manager --setopt=tsflags=nodocs install \
-      ruby-devel \
+      ruby-devel jq \
       # To compile native gem extensions
       gcc-c++ make redhat-rpm-config \
       # For git based gems
